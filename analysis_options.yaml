@@ -1,0 +1,16 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    file_name: ignore
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  errors:
+    invalid_annotation_target: ignore
+    prefer_single_quotes: ignore
+    omit_local_variable_types: ignore
+    sort_child_properties_last: ignore
+  
