@@ -30,7 +30,7 @@ abstract class IAuthService extends IBaseService {
   Future<void> sendSignInWithEmailLink({required String email});
 
   // Phone login
-  Future<AuthUser?> signInWithPhone(verificationId, smsOTP);
+  Future<AuthUser?> signInWithPhone(verificationId, smsOTP, {bool linkToUser = false});
   Future<SendCodeResult> sendSignInWithPhoneCode({
     String? phoneNumber,
     dynamic resendingId,
@@ -49,7 +49,7 @@ class SendCodeResult {
   final String? phoneNumber;
   final Future<AuthUser>? authResult;
   final Future<SendCodeResult?> Function() resendCode;
-  final Future<AuthUser?> Function(String) codeVerification;
+  final Future<AuthUser?> Function(String, bool) codeVerification;
 
   SendCodeResult({
     required this.phoneNumber,

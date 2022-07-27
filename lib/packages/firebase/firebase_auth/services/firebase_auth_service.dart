@@ -143,8 +143,8 @@ class FirebaseAuthService extends IAuthService {
   }
 
   @override
-  Future<AuthUser?> signInWithPhone(verificationId, smsOTP) {
-    return failureCatcher<AuthUser?>(() => phoneSignin.signInWithPhone(verificationId, smsOTP));
+  Future<AuthUser?> signInWithPhone(verificationId, smsOTP, {bool linkToUser = false}) {
+    return failureCatcher<AuthUser?>(() => phoneSignin.signInWithPhone(verificationId, smsOTP, linkToUser));
   }
 
   @override

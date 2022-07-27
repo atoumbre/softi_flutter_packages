@@ -7,7 +7,7 @@ abstract class IBaseView<T extends IBaseViewController> extends StatelessWidget 
     Key? key,
   }) : super(key: key);
 
-  T init();
+  T init() => Get.find<T>();
   Widget builder(T controller);
   // Widget? loadingBuilder(T controller) => null;
   // Widget errorBuilder(T controller) => Center(child: Text('An Error Occurs', style: TextStyle(color: Colors.red)));

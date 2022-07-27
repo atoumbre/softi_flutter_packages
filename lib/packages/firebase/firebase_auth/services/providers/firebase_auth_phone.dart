@@ -13,8 +13,8 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
     return PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
   }
 
-  Future<AuthUser?> signInWithPhone(verificationId, smsOTP) async {
-    return signInWithCredential(await getCredentialForPhone(verificationId, smsOTP));
+  Future<AuthUser?> signInWithPhone(verificationId, smsOTP, linkToUser) async {
+    return signInWithCredential(await getCredentialForPhone(verificationId, smsOTP), linkToUser: linkToUser);
   }
 
   Future<SendCodeResult> _sendSignInWithPhoneCodeWeb(String phoneNumber) async {
@@ -22,7 +22,7 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
 
     return SendCodeResult(
       phoneNumber: phoneNumber,
-      codeVerification: ((code) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code)))!),
+      codeVerification: ((code, linkToUser) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code)))!),
       resendCode: () => _sendSignInWithPhoneCodeWeb(phoneNumber),
     );
   }
@@ -46,8 +46,8 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
           phoneNumber: phoneNumber,
 
           ///
-          codeVerification: (code) async {
-            var _result = await signInWithPhone(verificationId, code);
+          codeVerification: (code, linkToUser) async {
+            var _result = await signInWithPhone(verificationId, code, linkToUser);
             autoRetriveCompleter.complete(_result);
             return _result!;
           },

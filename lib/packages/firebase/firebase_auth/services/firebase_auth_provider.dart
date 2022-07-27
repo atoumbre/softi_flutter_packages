@@ -43,7 +43,7 @@ abstract class FirebaseAuthProvider {
     var authUser = authUserFromUser(user);
 
     authUser?.setIsNew(
-      userCredential.additionalUserInfo!.isNewUser,
+      userCredential.additionalUserInfo?.isNewUser ?? false,
     );
 
     return authUser;
