@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:softi_packages/packages/auth/models/auth_user.dart';
 import 'package:softi_packages/packages/core/services/BaseService.dart';
 
+enum AuthMethod { Email, Phone, Google, Apple, FaceBook }
+
 abstract class IAuthService extends IBaseService {
   Future<AuthUser?> get getCurrentUser;
   Stream<AuthUser?> get authUserStream;
@@ -37,6 +39,8 @@ abstract class IAuthService extends IBaseService {
   });
 
   Future<void> signOut();
+
+  Future<void> unlink(AuthMethod authMethod);
 
   void refresh();
 }

@@ -161,4 +161,19 @@ class FirebaseAuthService extends IAuthService {
   ServiceFailure? errorHandler(dynamic error) {
     return null;
   }
+
+  @override
+  Future<void> unlink(AuthMethod authMethod) async {
+    var providerId = <AuthMethod, String>{
+      AuthMethod.Email: 'apple',
+      AuthMethod.Phone: 'apple',
+      AuthMethod.Google: 'apple',
+      AuthMethod.Apple: 'apple',
+      AuthMethod.FaceBook: 'apple',
+    }[authMethod];
+
+    if (providerId == null) return;
+
+    firebaseAuth.currentUser?.unlink(providerId);
+  }
 }

@@ -17,7 +17,11 @@ class AuthUser {
   final bool? isEmailVerified;
   final DateTime? creationTime;
   final DateTime? lastSignInTime;
-  final String? providerId;
+
+  // Provider Info
+  final dynamic appleUserInfo;
+  final dynamic googleUserInfo;
+  final dynamic facebookUserInfo;
 
   AuthUser({
     required this.uid,
@@ -30,7 +34,9 @@ class AuthUser {
     this.isEmailVerified,
     this.creationTime,
     this.lastSignInTime,
-    this.providerId,
+    this.appleUserInfo,
+    this.googleUserInfo,
+    this.facebookUserInfo,
   });
 
   // const factory AuthUser({

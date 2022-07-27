@@ -67,7 +67,7 @@ abstract class FirebaseAuthProvider {
     user.refreshToken;
 
     // user.
-    return AuthUser(
+    var _authUser = AuthUser(
       uid: user.uid,
       // info
       displayName: user.displayName,
@@ -78,9 +78,13 @@ abstract class FirebaseAuthProvider {
       // providerId: user.providerData,
       isAnonymous: user.isAnonymous,
       isEmailVerified: user.emailVerified,
-
       creationTime: user.metadata.creationTime,
       lastSignInTime: user.metadata.lastSignInTime,
+      appleUserInfo: user.providerData.firstWhere((element) => element.providerId == 'apple.com', orElse: () => UserInfo({})),
+      googleUserInfo: user.providerData.firstWhere((element) => element.providerId == 'google.com', orElse: () => UserInfo({})),
+      facebookUserInfo: user.providerData.firstWhere((element) => element.providerId == 'facebook.com', orElse: () => UserInfo({})),
     );
+
+    return _authUser;
   }
 }
