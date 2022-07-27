@@ -60,8 +60,7 @@ export 'package:softi_packages/packages/firebase/firebase_firestore/firebase_des
 export 'package:softi_packages/packages/firebase/firebase_firestore/firebase_resource.dart';
 export 'package:softi_packages/packages/firebase/firebase_firestore/firestore_resource_adapter.dart';
 export 'package:softi_packages/packages/firebase/firebase_firestore/firestore_resource_base.dart';
-export 'package:softi_packages/packages/firebase/firebase_services/lib/services.dart';
-export 'package:softi_packages/packages/firebase/firebase_services/lib/src/deep_link/firebase_deeplink_service.dart';
+export 'package:softi_packages/packages/firebase/firebase_services/deep_link/firebase_deeplink_service.dart';
 export 'package:softi_packages/packages/firebase/firebase_storage/firebase_storage_service.dart';
 
 ///
