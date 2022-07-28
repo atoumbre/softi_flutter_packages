@@ -3,10 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:softi_packages/packages/auth/models/auth_user.dart';
 import 'package:softi_packages/packages/firebase/firebase_auth/services/firebase_auth_provider.dart';
+import 'package:softi_packages/packages/auth/interfaces/i_auth_service.dart';
 
-class FirebaseGoogleSignin extends FirebaseAuthProvider {
+class FirebaseGoogleSignin extends IGoogleAuthProvider with FirebaseAuthProvider {
+  String get providerId => 'google.com';
+
+  final FirebaseAuth firebaseAuth;
   FirebaseGoogleSignin(
-    FirebaseAuth firebaseAuth,
+    this.firebaseAuth,
 
     //
     //   {
@@ -14,7 +18,7 @@ class FirebaseGoogleSignin extends FirebaseAuthProvider {
     //   this.appleSignInClientId,
     // }
     //
-  ) : super(firebaseAuth);
+  );
 
   Future<AuthCredential> getCredentialForGoogle() async {
     final googleSignIn = GoogleSignIn();
@@ -35,5 +39,7 @@ class FirebaseGoogleSignin extends FirebaseAuthProvider {
     }
   }
 
-  Future<AuthUser?> signInWithGoogle({linkToUser = false}) async => signInWithCredential(await getCredentialForGoogle(), linkToUser: linkToUser);
+  Future<AuthUser?> signInWithGoogle({linkToUser = false}) async {
+    return failureCatcher<AuthUser?>(() async => signInWithCredential(await getCredentialForGoogle(), linkToUser: linkToUser));
+  }
 }

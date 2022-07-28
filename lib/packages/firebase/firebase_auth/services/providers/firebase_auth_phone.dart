@@ -6,15 +6,15 @@ import 'package:softi_packages/packages/auth/interfaces/i_auth_service.dart';
 import 'package:softi_packages/packages/auth/models/auth_user.dart';
 import 'package:softi_packages/packages/firebase/firebase_auth/services/firebase_auth_provider.dart';
 
-class FirebaseAuthPhone extends FirebaseAuthProvider {
-  FirebaseAuthPhone(FirebaseAuth firebaseAuth) : super(firebaseAuth);
+class FirebaseAuthPhone extends IPhoneAuthProvider with FirebaseAuthProvider {
+  String get providerId => 'phone';
 
-  Future<AuthCredential> getCredentialForPhone(String verificationId, String smsCode) async {
+  final FirebaseAuth firebaseAuth;
+
+  FirebaseAuthPhone(this.firebaseAuth);
+
+  Future<AuthCredential> _getCredentialForPhone(String verificationId, String smsCode) async {
     return PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
-  }
-
-  Future<AuthUser?> signInWithPhone(verificationId, smsOTP, linkToUser) async {
-    return signInWithCredential(await getCredentialForPhone(verificationId, smsOTP), linkToUser: linkToUser);
   }
 
   Future<SendCodeResult> _sendSignInWithPhoneCodeWeb(String phoneNumber) async {
@@ -29,9 +29,12 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
 
   Future<SendCodeResult> _sendSignInWithPhoneCodeNative({
     required String phoneNumber,
-    dynamic resendingId,
     bool autoRetrive = true,
     int autoRetrievalTimeoutSeconds = 30,
+    bool linkToUser = false,
+
+    ///
+    dynamic resendingId,
   }) async {
     var _sendCodeCompleter = Completer<SendCodeResult>();
 
@@ -46,8 +49,8 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
           phoneNumber: phoneNumber,
 
           ///
-          codeVerification: (code, linkToUser) async {
-            var _result = await signInWithPhone(verificationId, code, linkToUser);
+          codeVerification: (String code, bool linkToUser) async {
+            var _result = await signInWithPhone(verificationId, code, linkToUser: linkToUser);
             autoRetriveCompleter.complete(_result);
             return _result!;
           },
@@ -61,7 +64,7 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
           ),
 
           ///
-          authResult: autoRetriveCompleter.future,
+          autoAuthResult: autoRetriveCompleter.future,
         );
 
         _sendCodeCompleter.complete(result);
@@ -77,7 +80,7 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
       timeout: Duration(seconds: autoRetrive ? autoRetrievalTimeoutSeconds : 0),
 
       verificationCompleted: (AuthCredential authCredential) async {
-        var _user = await signInWithCredential(authCredential);
+        var _user = await signInWithCredential(authCredential, linkToUser: linkToUser);
         autoRetriveCompleter.complete(_user);
       },
 
@@ -90,22 +93,27 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
     return _sendCodeCompleter.future;
   }
 
+  Future<AuthUser?> signInWithPhone(dynamic verificationId, String smsOTP, {bool linkToUser = false}) {
+    return failureCatcher<AuthUser?>(() async => signInWithCredential(await _getCredentialForPhone(verificationId, smsOTP), linkToUser: linkToUser));
+  }
+
   Future<SendCodeResult> sendSignInWithPhoneCode({
-    String? phoneNumber,
-    dynamic resendingId,
-    bool autoRetrive = true,
+    required String phoneNumber,
     int autoRetrievalTimeoutSeconds = 30,
+    bool autoRetrive = true,
+    bool linkToUser = false,
   }) {
-    if (kIsWeb) {
-      return _sendSignInWithPhoneCodeWeb(phoneNumber!);
-    } else {
-      var test = _sendSignInWithPhoneCodeNative(
-        phoneNumber: phoneNumber!,
-        resendingId: resendingId,
-        autoRetrive: autoRetrive,
-        autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
-      );
-      return test;
-    }
+    return failureCatcher<SendCodeResult>(() {
+      if (kIsWeb) {
+        return _sendSignInWithPhoneCodeWeb(phoneNumber);
+      } else {
+        var test = _sendSignInWithPhoneCodeNative(
+          phoneNumber: phoneNumber,
+          autoRetrive: autoRetrive,
+          autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
+        );
+        return test;
+      }
+    });
   }
 }

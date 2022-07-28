@@ -2,11 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:softi_packages/packages/auth/models/auth_user.dart';
 import 'package:softi_packages/packages/firebase/firebase_auth/services/firebase_auth_provider.dart';
+import 'package:softi_packages/packages/auth/interfaces/i_auth_service.dart';
 
-class FirebaseAuthFacebookSignIn extends FirebaseAuthProvider {
+class FirebaseAuthFacebookSignIn extends IFacebookAuthProvider with FirebaseAuthProvider {
+  String get providerId => 'facebook.com';
+
   final String? facebookClientId;
+  final FirebaseAuth firebaseAuth;
 
-  FirebaseAuthFacebookSignIn(FirebaseAuth firebaseAuth, {this.facebookClientId}) : super(firebaseAuth);
+  FirebaseAuthFacebookSignIn(this.firebaseAuth, {this.facebookClientId});
 
   Future<AuthCredential> getFacebookAuthCredential(Future<String> Function(Widget)? navigator) async {
     // String result = await Navigator.push(
@@ -28,5 +32,7 @@ class FirebaseAuthFacebookSignIn extends FirebaseAuthProvider {
     // }
   }
 
-  Future<AuthUser?> signInWithFacebook(dynamic context, {linkToUser = false}) async => signInWithCredential(await getFacebookAuthCredential(context), linkToUser: linkToUser);
+  Future<AuthUser?> signInWithFacebook(dynamic context, {linkToUser = false}) async {
+    return signInWithCredential(await getFacebookAuthCredential(context), linkToUser: linkToUser);
+  }
 }

@@ -2,18 +2,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:softi_packages/packages/auth/models/auth_user.dart';
 
 abstract class FirebaseAuthProvider {
-  final FirebaseAuth firebaseAuth;
+  FirebaseAuth get firebaseAuth;
+  String get providerId;
 
-  FirebaseAuthProvider(this.firebaseAuth);
+  // FirebaseAuthProvider(this.firebaseAuth);
 
   Future<AuthUser?> signInWithCredential(
     AuthCredential credential, {
     String? displayName,
     String? photoURL,
-    linkToUser = false,
+    required bool linkToUser,
   }) async {
     final authResult = linkToUser ? await firebaseAuth.currentUser!.linkWithCredential(credential) : await firebaseAuth.signInWithCredential(credential);
-
+    if (linkToUser) firebaseAuth.currentUser!.reload();
     // final firebaseUser = authResult.user;
 
     if (displayName != null) {
@@ -26,16 +27,21 @@ abstract class FirebaseAuthProvider {
     return userFromFirebase(authResult);
   }
 
-  // Future<AuthUser> linkCredential(AuthCredential credential, {String displayName, String photoURL}) async {
-  //   final authResult = await firebaseAuth.currentUser.linkWithCredential(credential);
+  Future<AuthUser?> unlink() async {
+    var _r = FirebaseAuthProvider.authUserFromUser(await firebaseAuth.currentUser?.unlink(providerId));
+    firebaseAuth.currentUser!.reload();
+    return _r;
+  }
 
-  //   // final firebaseUser = authResult.user;
-
-  //   if (displayName != null) await authResult.user.updateProfile(displayName: displayName);
-  //   if (photoURL != null) await authResult.user.updateProfile(photoURL: photoURL);
-
-  //   return userFromFirebase(authResult);
-  // }
+  Stream<UserInfo?> get providerData {
+    return firebaseAuth.authStateChanges().map((event) {
+      try {
+        return event!.providerData.firstWhere((element) => element.providerId == providerId);
+      } catch (e) {
+        return null;
+      }
+    });
+  }
 
   static AuthUser? userFromFirebase(UserCredential userCredential) {
     var user = userCredential.user;

@@ -9,45 +9,25 @@ abstract class IAuthService extends IBaseService {
   Future<AuthUser?> get getCurrentUser;
   Stream<AuthUser?> get authUserStream;
 
-  // Anonymous login
+  IAppleAuthProvider get appleSignin;
+  IGoogleAuthProvider get googleSignin;
+  IFacebookAuthProvider get facebookSignin;
+  IEmailAndLinkAuthProvider get emailLinkSignin;
+  IEmailAndPasswordAuthProvider get emailSignin;
+  IPhoneAuthProvider get phoneSignin;
+
   Future<AuthUser?> signInAnonymously();
-
-  // Email and password
-  Future<AuthUser?> signInWithEmailAndPassword(String email, String password);
-  Future<AuthUser?> createUserWithEmailAndPassword(String email, String password);
-  Future<void> sendPasswordResetEmail(String email);
-
-  // OS Login
-  Future<AuthUser?> signInWithGoogle({bool linkToUser = false});
-  Future<AuthUser?> signInWithApple({bool linkToUser = false});
-
-  // Social Login
-  Future<AuthUser?> signInWithFacebook(dynamic param, {linkToUser = false});
-
-  // Email Link login
-  Future<AuthUser?> signInWithEmailAndLink({required String email, required String link});
-  Future<bool> isSignInWithEmailLink({required String link});
-  Future<void> sendSignInWithEmailLink({required String email});
-
-  // Phone login
-  Future<AuthUser?> signInWithPhone(verificationId, smsOTP, {bool linkToUser = false});
-  Future<SendCodeResult> sendSignInWithPhoneCode({
-    String? phoneNumber,
-    dynamic resendingId,
-    bool? autoRetrive,
-    int autoRetrievalTimeoutSeconds = 30,
-  });
 
   Future<void> signOut();
 
-  Future<void> unlink(AuthMethod authMethod);
+  Future<void> deleteAccount();
 
   void refresh();
 }
 
 class SendCodeResult {
   final String? phoneNumber;
-  final Future<AuthUser>? authResult;
+  final Future<AuthUser>? autoAuthResult;
   final Future<SendCodeResult?> Function() resendCode;
   final Future<AuthUser?> Function(String, bool) codeVerification;
 
@@ -55,12 +35,64 @@ class SendCodeResult {
     required this.phoneNumber,
     required this.codeVerification,
     required this.resendCode,
-    this.authResult,
+    this.autoAuthResult,
   });
 }
 
-// class AuthError extends Error {
-//   AuthError({this.code, this.message});
-//   final String? code;
-//   final String? message;
-// }
+abstract class IAppleAuthProvider extends IBaseService {
+  Future<AuthUser?> signInWithApple({bool linkToUser = false});
+
+  //
+  Future<AuthUser?> unlink();
+  Stream<dynamic> get providerData;
+}
+
+abstract class IGoogleAuthProvider extends IBaseService {
+  Future<AuthUser?> signInWithGoogle({bool linkToUser = false});
+
+  //
+  Future<AuthUser?> unlink();
+  Stream<dynamic> get providerData;
+}
+
+abstract class IFacebookAuthProvider extends IBaseService {
+  Future<AuthUser?> signInWithFacebook(dynamic context, {bool linkToUser = false});
+
+  //
+  Future<AuthUser?> unlink();
+  Stream<dynamic> get providerData;
+}
+
+abstract class IEmailAndPasswordAuthProvider extends IBaseService {
+  Future<AuthUser?> createUserWithEmailAndPassword(String email, String password);
+  Future<void> sendPasswordResetEmail(String email);
+  Future<AuthUser?> signInWithEmailAndPassword(String email, String password, {bool linkToUser = false});
+
+  //
+  Future<AuthUser?> unlink();
+  Stream<dynamic> get providerData;
+}
+
+abstract class IEmailAndLinkAuthProvider extends IBaseService {
+  Future<AuthUser?> signInWithEmailAndLink({required String email, required String link, required bool linkToUser});
+  Future<bool> isSignInWithEmailLink({required String link});
+  Future<void> sendSignInWithEmailLink({required String email});
+
+  //
+  Future<AuthUser?> unlink();
+  Stream<dynamic> get providerData;
+}
+
+abstract class IPhoneAuthProvider extends IBaseService {
+  Future<AuthUser?> signInWithPhone(dynamic verificationId, String smsOTP, {bool linkToUser = false});
+  Future<SendCodeResult> sendSignInWithPhoneCode({
+    required String phoneNumber,
+    int autoRetrievalTimeoutSeconds = 30,
+    bool autoRetrive = true,
+    bool linkToUser = false,
+  });
+
+  //
+  Future<AuthUser?> unlink();
+  Stream<dynamic> get providerData;
+}

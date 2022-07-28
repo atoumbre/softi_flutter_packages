@@ -2,16 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:softi_packages/packages/auth/models/auth_user.dart';
 import 'package:softi_packages/packages/firebase/firebase_auth/services/firebase_auth_provider.dart';
+import 'package:softi_packages/packages/auth/interfaces/i_auth_service.dart';
 
-class FirebaseAppleSignin extends FirebaseAuthProvider {
+class FirebaseAppleSignin extends IAppleAuthProvider with FirebaseAuthProvider {
+  String get providerId => 'apple.com';
+
   final String? appleSignInCallbackUrl;
   final String? appleSignInClientId;
+  final FirebaseAuth firebaseAuth;
 
   FirebaseAppleSignin(
-    FirebaseAuth firebaseAuth, {
+    this.firebaseAuth, {
     this.appleSignInCallbackUrl,
     this.appleSignInClientId,
-  }) : super(firebaseAuth);
+  }); //: super(firebaseAuth);
 
   Future<AuthCredential> getCredentialForApple() async {
     final appleIdCredential = await SignInWithApple.getAppleIDCredential(
@@ -36,5 +40,7 @@ class FirebaseAppleSignin extends FirebaseAuthProvider {
     );
   }
 
-  Future<AuthUser?> signInWithApple({linkToUser = false}) async => signInWithCredential(await getCredentialForApple(), linkToUser: linkToUser);
+  Future<AuthUser?> signInWithApple({linkToUser = false}) async {
+    return failureCatcher<AuthUser?>(() async => signInWithCredential(await getCredentialForApple(), linkToUser: linkToUser));
+  }
 }
