@@ -97,7 +97,7 @@ class FirebaseAuthPhone extends IPhoneAuthProvider with FirebaseAuthProvider {
     return failureCatcher<AuthUser?>(() async => signInWithCredential(await _getCredentialForPhone(verificationId, smsOTP), linkToUser: linkToUser));
   }
 
-  Future<SendCodeResult> sendSignInWithPhoneCode({
+  Future<SendCodeResult> sendPhoneCode({
     required String phoneNumber,
     int autoRetrievalTimeoutSeconds = 30,
     bool autoRetrive = true,

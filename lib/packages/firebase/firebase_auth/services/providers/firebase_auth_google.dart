@@ -39,7 +39,7 @@ class FirebaseGoogleSignin extends IGoogleAuthProvider with FirebaseAuthProvider
     }
   }
 
-  Future<AuthUser?> signInWithGoogle({linkToUser = false}) async {
+  Future<AuthUser?> signIn({linkToUser = false}) async {
     return failureCatcher<AuthUser?>(() async => signInWithCredential(await getCredentialForGoogle(), linkToUser: linkToUser));
   }
 }

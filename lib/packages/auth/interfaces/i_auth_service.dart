@@ -40,7 +40,7 @@ class SendCodeResult {
 }
 
 abstract class IAppleAuthProvider extends IBaseService {
-  Future<AuthUser?> signInWithApple({bool linkToUser = false});
+  Future<AuthUser?> signIn({bool linkToUser = false});
 
   //
   Future<AuthUser?> unlink();
@@ -48,7 +48,7 @@ abstract class IAppleAuthProvider extends IBaseService {
 }
 
 abstract class IGoogleAuthProvider extends IBaseService {
-  Future<AuthUser?> signInWithGoogle({bool linkToUser = false});
+  Future<AuthUser?> signIn({bool linkToUser = false});
 
   //
   Future<AuthUser?> unlink();
@@ -56,7 +56,7 @@ abstract class IGoogleAuthProvider extends IBaseService {
 }
 
 abstract class IFacebookAuthProvider extends IBaseService {
-  Future<AuthUser?> signInWithFacebook(dynamic context, {bool linkToUser = false});
+  Future<AuthUser?> signIn({bool linkToUser = false});
 
   //
   Future<AuthUser?> unlink();
@@ -85,7 +85,7 @@ abstract class IEmailAndLinkAuthProvider extends IBaseService {
 
 abstract class IPhoneAuthProvider extends IBaseService {
   Future<AuthUser?> signInWithPhone(dynamic verificationId, String smsOTP, {bool linkToUser = false});
-  Future<SendCodeResult> sendSignInWithPhoneCode({
+  Future<SendCodeResult> sendPhoneCode({
     required String phoneNumber,
     int autoRetrievalTimeoutSeconds = 30,
     bool autoRetrive = true,

@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:softi_packages/packages/auth/interfaces/i_auth_service.dart';
 import 'package:softi_packages/packages/auth/models/auth_user.dart';
 import 'package:softi_packages/packages/firebase/firebase_auth/services/firebase_auth_provider.dart';
-import 'package:softi_packages/packages/auth/interfaces/i_auth_service.dart';
 
 class FirebaseAuthFacebookSignIn extends IFacebookAuthProvider with FirebaseAuthProvider {
   String get providerId => 'facebook.com';
@@ -12,27 +13,23 @@ class FirebaseAuthFacebookSignIn extends IFacebookAuthProvider with FirebaseAuth
 
   FirebaseAuthFacebookSignIn(this.firebaseAuth, {this.facebookClientId});
 
-  Future<AuthCredential> getFacebookAuthCredential(Future<String> Function(Widget)? navigator) async {
-    // String result = await Navigator.push(
-    //   context,
-    //   //! CustomWebView for Facebook login
-    //   MaterialPageRoute(
-    //     builder: (context) => getFacebookLoginWebView(context, settings.facebookClientId),
-    //     maintainState: true,
-    //   ),
-    // );
+  Future<AuthCredential> getFacebookAuthCredential() async {
+    final LoginResult result = await FacebookAuth.instance.login();
+    // by default we request the email and the public profile
+    // or FacebookAuth.i.login()
+    if (result.status == LoginStatus.success) {
+      // you are logged
+      final AccessToken accessToken = result.accessToken!;
+      return FacebookAuthProvider.credential(accessToken.token);
+    } else {
+      print(result.status);
+      print(result.message);
 
-    var result = '';
-    //await navigator(facebookLoginWebView(facebookClientId));
-
-    // if (result != null) {
-    return FacebookAuthProvider.credential(result);
-    // } else {
-    //   throw PlatformException(code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
-    // }
+      throw PlatformException(code: result.status.toString(), message: result.message);
+    }
   }
 
-  Future<AuthUser?> signInWithFacebook(dynamic context, {linkToUser = false}) async {
-    return signInWithCredential(await getFacebookAuthCredential(context), linkToUser: linkToUser);
+  Future<AuthUser?> signIn({linkToUser = false}) async {
+    return signInWithCredential(await getFacebookAuthCredential(), linkToUser: linkToUser);
   }
 }
