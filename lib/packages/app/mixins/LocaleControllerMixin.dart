@@ -20,7 +20,7 @@ mixin LocaleControllerMixin on IBaseController {
   }
 
   Future<void> setLanguage(Locale language, {save = true}) async {
-    await Get.updateLocale(language);
+    await _setLanguage(language);
     if (save) await _store.setKey('language', language.toString());
   }
 
