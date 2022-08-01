@@ -9,7 +9,7 @@ import 'package:softi_packages/packages/core/controllers/BaseController.dart';
 mixin LocaleControllerMixin on IBaseController {
   ILocalStore get _store => Get.find();
 
-  final _locale = const Locale('fr').obs;
+  final _locale = const Locale('en').obs;
 
   Locale get locale => _locale.value;
 
@@ -20,7 +20,7 @@ mixin LocaleControllerMixin on IBaseController {
   }
 
   Future<void> setLanguage(Locale language, {save = true}) async {
-    await _setLanguage(language);
+    _setLanguage(language);
     if (save) await _store.setKey('language', language.toString());
   }
 
