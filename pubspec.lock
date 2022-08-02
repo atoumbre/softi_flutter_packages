@@ -776,7 +776,7 @@ packages:
       name: wechat_assets_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.3.2"
+    version: "7.3.4"
   wechat_camera_picker:
     dependency: "direct main"
     description:

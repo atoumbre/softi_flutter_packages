@@ -10,7 +10,7 @@ mixin CollectionWithTransformControllerMixin<T extends IResourceData, U extends 
   @override
   Future<void> onReady() async {
     super.onReady();
-    // initCollection();
+    initCollection();
   }
 
   @override
@@ -28,12 +28,12 @@ mixin CollectionWithTransformControllerMixin<T extends IResourceData, U extends 
   RxBool get hasMoreData => collection.hasMoreData;
   RxBool get isResourceLoading => collection.loading;
 
-  Future<void> handleListItemCreation(int index, [int itemCount = 0]) async {
+  void handleListItemCreation(int index, [int itemCount = 0]) {
     // when item is created we request more data when we reached the end of current page
     // print('${collection.data.value.length} - ${collection.hasMoreData()} - $index');
 
     if (collection.data.value.length == (index + 1) && collection.hasMoreData()) {
-      return collection.requestMoreData();
+      collection.requestMoreData();
     }
   }
 

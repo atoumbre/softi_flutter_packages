@@ -47,6 +47,7 @@ class QueryPagination {
 
 enum QueryOperator {
   equal,
+  notEqual,
   greaterThan,
   greaterThanOrEqualTo,
   lessThan,

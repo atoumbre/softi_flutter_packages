@@ -15,7 +15,7 @@ dependencies:
   location: ^4.4.0
   wechat_camera_picker: ^3.4.0
   image_cropper: ^2.0.3
-  wechat_assets_picker: ^7.3.2
+  wechat_assets_picker: ^7.3.4
   firebase_auth: ^3.5.1
   sign_in_with_apple: ^4.1.0
   google_sign_in: ^5.4.0

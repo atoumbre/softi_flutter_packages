@@ -74,6 +74,7 @@ mixin BaseFilterMixin {
 
   FieldFilterExtended $orderBy(String field, {bool desc = false}) => $field(field).$sort(desc: desc);
   FieldFilterExtended $filter$eq(String field, value) => $field(field).$eq(value);
+  FieldFilterExtended $filter$notEq(String field, value) => $field(field).$notEq(value);
   FieldFilterExtended $filter$gt(String field, value) => $field(field).$gt(value);
   FieldFilterExtended $filter$gte(String field, value) => $field(field).$gte(value);
   FieldFilterExtended $filter$lt(String field, value) => $field(field).$lt(value);
@@ -102,6 +103,11 @@ mixin FieldFilterMixin {
 
   FieldFilterExtended $eq(dynamic value) {
     _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.equal, value: value));
+    return FieldFilterExtended(_field, _filterBuilder);
+  }
+
+  FieldFilterExtended $notEq(dynamic value) {
+    _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.notEqual, value: value));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 

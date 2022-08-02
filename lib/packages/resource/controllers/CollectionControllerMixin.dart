@@ -29,22 +29,22 @@ mixin CollectionControllerMixin<T extends IResourceData> on IBaseViewController 
   RxBool get hasMoreData => collection.hasMoreData;
   RxBool get isResourceLoading => collection.loading;
 
-  Future<void> handleListItemCreation(int index, [int itemCount = 0]) async {
+  void handleListItemCreation(int index, [int itemCount = 0]) {
     // when item is created we request more data when we reached the end of current page
     if (collection.data().length == (index + 1) && collection.hasMoreData()) {
       // await serviceTaskHandler(task: () {
-      return collection.requestMoreData();
+      collection.requestMoreData();
       // });
     }
   }
 
   Future<void> requestData() async {
-    await serviceTaskHandler(() async {
-      collection.requestData(
-        queryParameters,
-        options: options,
-      );
-    });
+    // await serviceTaskHandler(() async {
+    collection.requestData(
+      queryParameters,
+      options: options,
+    );
+    // });
   }
 
   void initCollection() {

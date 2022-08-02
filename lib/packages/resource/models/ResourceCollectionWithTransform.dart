@@ -35,7 +35,7 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
   late CollectionOptions _options;
 
   // Returned info
-  final hasMoreData = true.obs;
+  final hasMoreData = true.obs..stream.listen((event) => print('Has more $event'));
   final data = Rx<List<U>>(<U>[]);
   final changes = Rx<List<DataChange<T>>>(<DataChange<T>>[]);
   final loading = false.obs;
@@ -57,10 +57,10 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
 
   Future<void> requestMoreData({refresh = false}) async {
     if (refresh) _reset();
-    await _requestData();
+    _requestData();
   }
 
-  Future<void> _requestData() async {
+  void _requestData() {
     if (!hasMoreData()) return;
     if (_loading) return;
 
@@ -76,9 +76,14 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
         ? _options.pageSize
         : min(_options.maxRecordNumber - _queryRecordCount, _options.pageSize);
 
+    if (_queryPageSize == 0) {
+      hasMoreData(false);
+      return;
+    }
+
     _queryRecordCount += _queryPageSize;
 
-    print('Page Count $_pageCount');
+    print('Page Count $_pageCount, Page Size $_queryPageSize');
     _pagination = QueryPagination(
       limit: _queryPageSize,
       cursor: _pageCount == 1 ? null : _lastCursor,
@@ -94,7 +99,14 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
       reactive: _options.reactive,
     )
         .listen(
-      (r) => _handler(r, _pageIndex), // ignore: argument_type_not_assignable_to_error_handler
+      (r) {
+        _handler(r, _pageIndex);
+        _loading = false;
+
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          loading(false);
+        });
+      },
       onError: (_) {
         _loading = false;
         SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -144,18 +156,12 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
 
     // Check if we have more data
     hasMoreData(
-      data.value.length >= _queryRecordCount && _queryRecordCount <= (_options.maxRecordNumber),
+      data.value.length >= _queryRecordCount && _queryRecordCount < _options.maxRecordNumber,
     );
 
     if (!_options.reactive && !hasMoreData()) {
       _subscriptions.forEach((element) => element.cancel());
     }
-
-    _loading = false;
-
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      loading(false);
-    });
   }
 
   void _reset() {

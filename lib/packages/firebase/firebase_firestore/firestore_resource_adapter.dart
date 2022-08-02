@@ -135,6 +135,9 @@ class FirestoreResourceAdapter<T extends IResourceData> extends IResourceAdapter
           case QueryOperator.equal:
             _query = _query.where(where.field!, isEqualTo: where.value);
             break;
+          case QueryOperator.notEqual:
+            _query = _query.where(where.field!, isNotEqualTo: where.value);
+            break;
           case QueryOperator.greaterThanOrEqualTo:
             _query = _query.where(where.field!, isGreaterThanOrEqualTo: where.value);
             break;
