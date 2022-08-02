@@ -76,11 +76,6 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
         ? _options.pageSize
         : min(_options.maxRecordNumber - _queryRecordCount, _options.pageSize);
 
-    if (_queryPageSize == 0) {
-      hasMoreData(false);
-      return;
-    }
-
     _queryRecordCount += _queryPageSize;
 
     print('Page Count $_pageCount, Page Size $_queryPageSize');

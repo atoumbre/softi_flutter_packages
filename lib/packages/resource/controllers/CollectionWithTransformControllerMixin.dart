@@ -10,7 +10,7 @@ mixin CollectionWithTransformControllerMixin<T extends IResourceData, U extends 
   @override
   Future<void> onReady() async {
     super.onReady();
-    initCollection();
+    // initCollection();
   }
 
   @override
