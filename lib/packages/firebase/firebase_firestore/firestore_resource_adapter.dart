@@ -131,36 +131,37 @@ class FirestoreResourceAdapter<T extends IResourceData> extends IResourceAdapter
 
     if (params?.filterList != null) {
       params!.filterList!.forEach((where) {
-        switch (where.condition) {
-          case QueryOperator.equal:
-            _query = _query.where(where.field!, isEqualTo: where.value);
-            break;
-          case QueryOperator.notEqual:
-            _query = _query.where(where.field!, isNotEqualTo: where.value);
-            break;
-          case QueryOperator.greaterThanOrEqualTo:
-            _query = _query.where(where.field!, isGreaterThanOrEqualTo: where.value);
-            break;
-          case QueryOperator.greaterThan:
-            _query = _query.where(where.field!, isGreaterThan: where.value);
-            break;
-          case QueryOperator.lessThan:
-            _query = _query.where(where.field!, isLessThan: where.value);
-            break;
-          case QueryOperator.lessThanOrEqualTo:
-            _query = _query.where(where.field!, isLessThanOrEqualTo: where.value);
-            break;
-          case QueryOperator.isIn:
-            _query = _query.where(where.field!, whereIn: where.value);
-            break;
-          case QueryOperator.arrayContains:
-            _query = _query.where(where.field!, arrayContains: where.value);
-            break;
-          case QueryOperator.arrayContainsAny:
-            _query = _query.where(where.field!, arrayContainsAny: where.value);
-            break;
-          default:
-        }
+        if (where.value != null)
+          switch (where.condition) {
+            case QueryOperator.equal:
+              _query = _query.where(where.field!, isEqualTo: where.value);
+              break;
+            case QueryOperator.notEqual:
+              _query = _query.where(where.field!, isNotEqualTo: where.value);
+              break;
+            case QueryOperator.greaterThanOrEqualTo:
+              _query = _query.where(where.field!, isGreaterThanOrEqualTo: where.value);
+              break;
+            case QueryOperator.greaterThan:
+              _query = _query.where(where.field!, isGreaterThan: where.value);
+              break;
+            case QueryOperator.lessThan:
+              _query = _query.where(where.field!, isLessThan: where.value);
+              break;
+            case QueryOperator.lessThanOrEqualTo:
+              _query = _query.where(where.field!, isLessThanOrEqualTo: where.value);
+              break;
+            case QueryOperator.isIn:
+              _query = _query.where(where.field!, whereIn: where.value);
+              break;
+            case QueryOperator.arrayContains:
+              _query = _query.where(where.field!, arrayContains: where.value);
+              break;
+            case QueryOperator.arrayContainsAny:
+              _query = _query.where(where.field!, arrayContainsAny: where.value);
+              break;
+            default:
+          }
       });
     }
 
