@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:softi_packages/packages/firebase/firebase_firestore/firestore_resource_adapter.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource_adapter.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource_base.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource_adapter.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource_base.dart';
 
 class FirestoreResourceBase extends IResourceBase {
   final IResource<T> Function<T extends IResourceData>() _resourceResolver;

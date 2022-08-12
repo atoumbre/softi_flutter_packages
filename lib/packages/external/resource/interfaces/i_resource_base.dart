@@ -1,8 +1,8 @@
-import 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource_adapter.dart';
-import 'package:softi_packages/packages/resource/models/ResourceCollection.dart';
-import 'package:softi_packages/packages/resource/models/ResourceCollectionWithTransform.dart';
-import 'package:softi_packages/packages/resource/models/ResourceRecord.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource_adapter.dart';
+import 'package:softi_packages/packages/external/resource/models/ResourceCollection.dart';
+import 'package:softi_packages/packages/external/resource/models/ResourceCollectionWithTransform.dart';
+import 'package:softi_packages/packages/external/resource/models/ResourceRecord.dart';
 
 abstract class IResourceBase {
   //! To override

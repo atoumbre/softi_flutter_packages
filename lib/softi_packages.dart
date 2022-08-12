@@ -1,27 +1,27 @@
 library softi_packages;
 
 ///
-export 'package:softi_packages/packages/app/interfaces/alert_service_interface.dart';
-export 'package:softi_packages/packages/app/interfaces/loading_service_interface.dart';
-export 'package:softi_packages/packages/app/interfaces/local_storage_interface.dart';
-export 'package:softi_packages/packages/app/mixins/IndexControllerMixin.dart';
-export 'package:softi_packages/packages/app/mixins/LocaleControllerMixin.dart';
-export 'package:softi_packages/packages/app/mixins/ThemeControllerMixin.dart';
-export 'package:softi_packages/packages/app/mixins/TimerControllerMixin.dart';
-export 'package:softi_packages/packages/app/mixins/TranslationControllerMixin.dart';
-export 'package:softi_packages/packages/app/services/alert_service.dart';
-export 'package:softi_packages/packages/app/services/loading_service.dart';
-export 'package:softi_packages/packages/app/services/local_storage.dart';
-export 'package:softi_packages/packages/app/widgets/BackgroundServiceManager.dart';
-export 'package:softi_packages/packages/app/widgets/HideKeyboardManager.dart';
-export 'package:softi_packages/packages/app/widgets/ListItemCreationAware.dart';
-export 'package:softi_packages/packages/app/widgets/StateFullWrapper.dart';
+export 'package:softi_packages/packages/app/alert_services/alert_service_interface.dart';
+export 'package:softi_packages/packages/app/loading/loading_service_interface.dart';
+export 'package:softi_packages/packages/app/local_storage/local_storage_interface.dart';
+export 'package:softi_packages/packages/common/mixins/IndexControllerMixin.dart';
+export 'package:softi_packages/packages/common/mixins/LocaleControllerMixin.dart';
+export 'package:softi_packages/packages/common/mixins/ThemeControllerMixin.dart';
+export 'package:softi_packages/packages/common/mixins/TimerControllerMixin.dart';
+export 'package:softi_packages/packages/common/mixins/TranslationControllerMixin.dart';
+export 'package:softi_packages/packages/app/alert_services/alert_service.dart';
+export 'package:softi_packages/packages/app/loading/loading_service.dart';
+export 'package:softi_packages/packages/app/local_storage/local_storage.dart';
+export 'package:softi_packages/packages/common/widgets/BackgroundServiceManager.dart';
+export 'package:softi_packages/packages/common/widgets/HideKeyboardManager.dart';
+export 'package:softi_packages/packages/common/widgets/ListItemCreationAware.dart';
+export 'package:softi_packages/packages/common/widgets/StateFullWrapper.dart';
 
 ///
-export 'package:softi_packages/packages/auth/controllers/AuthControllerMixin.dart';
-export 'package:softi_packages/packages/auth/interfaces/i_auth_service.dart';
-export 'package:softi_packages/packages/auth/models/auth_user.dart';
-export 'package:softi_packages/packages/auth/models/auth_user.freezed.dart';
+export 'package:softi_packages/packages/external/auth/controllers/AuthControllerMixin.dart';
+export 'package:softi_packages/packages/external/auth/interfaces/i_auth_service.dart';
+export 'package:softi_packages/packages/external/auth/models/auth_user.dart';
+export 'package:softi_packages/packages/external/auth/models/auth_user.freezed.dart';
 
 ///
 export 'package:softi_packages/packages/core/controllers/BaseController.dart';
@@ -60,7 +60,7 @@ export 'package:softi_packages/packages/firebase/firebase_firestore/firebase_des
 export 'package:softi_packages/packages/firebase/firebase_firestore/firebase_resource.dart';
 export 'package:softi_packages/packages/firebase/firebase_firestore/firestore_resource_adapter.dart';
 export 'package:softi_packages/packages/firebase/firebase_firestore/firestore_resource_base.dart';
-export 'package:softi_packages/packages/firebase/firebase_services/deep_link/firebase_deeplink_service.dart';
+export 'package:softi_packages/packages/firebase/firebase_deeplink/firebase_deeplink_service.dart';
 export 'package:softi_packages/packages/firebase/firebase_storage/firebase_storage_service.dart';
 
 ///
@@ -72,26 +72,26 @@ export 'package:softi_packages/packages/form/helpers/helpers.dart';
 export 'package:softi_packages/packages/form/helpers/map_utils.dart';
 
 ///
-export 'package:softi_packages/packages/resource/controllers/CollectionController.dart';
-export 'package:softi_packages/packages/resource/controllers/CollectionControllerMixin.dart';
-export 'package:softi_packages/packages/resource/controllers/CollectionWithTransformControllerMixin.dart';
-export 'package:softi_packages/packages/resource/controllers/RecordController.dart';
-export 'package:softi_packages/packages/resource/controllers/RecordControllerMixin.dart';
-export 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
-export 'package:softi_packages/packages/resource/interfaces/i_resource_adapter.dart';
-export 'package:softi_packages/packages/resource/interfaces/i_resource_base.dart';
-export 'package:softi_packages/packages/resource/models/ResourceCollection.dart';
-export 'package:softi_packages/packages/resource/models/ResourceCollectionWithTransform.dart';
-export 'package:softi_packages/packages/resource/models/ResourceRecord.dart';
-export 'package:softi_packages/packages/resource/models/filters.dart';
-export 'package:softi_packages/packages/resource/models/query.dart';
+export 'package:softi_packages/packages/external/resource/controllers/CollectionController.dart';
+export 'package:softi_packages/packages/external/resource/controllers/CollectionControllerMixin.dart';
+export 'package:softi_packages/packages/external/resource/controllers/CollectionWithTransformControllerMixin.dart';
+export 'package:softi_packages/packages/external/resource/controllers/RecordController.dart';
+export 'package:softi_packages/packages/external/resource/controllers/RecordControllerMixin.dart';
+export 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
+export 'package:softi_packages/packages/external/resource/interfaces/i_resource_adapter.dart';
+export 'package:softi_packages/packages/external/resource/interfaces/i_resource_base.dart';
+export 'package:softi_packages/packages/external/resource/models/ResourceCollection.dart';
+export 'package:softi_packages/packages/external/resource/models/ResourceCollectionWithTransform.dart';
+export 'package:softi_packages/packages/external/resource/models/ResourceRecord.dart';
+export 'package:softi_packages/packages/external/resource/models/filters.dart';
+export 'package:softi_packages/packages/external/resource/models/query.dart';
 
 ///
-export 'package:softi_packages/packages/services/dynamic_links/i_dynamiclink_service.dart';
-export 'package:softi_packages/packages/services/presence/PresenceController.dart';
-export 'package:softi_packages/packages/services/presence/presence_service_interface.dart';
-export 'package:softi_packages/packages/services/remote_Storage/i_remote_storage.dart';
-export 'package:softi_packages/packages/services/remote_config/i_remote_config.dart';
+export 'package:softi_packages/packages/external/dynamic_links/i_dynamiclink_service.dart';
+export 'package:softi_packages/packages/external/presence/PresenceController.dart';
+export 'package:softi_packages/packages/external/presence/presence_service_interface.dart';
+export 'package:softi_packages/packages/external/remote_Storage/i_remote_storage.dart';
+export 'package:softi_packages/packages/external/remote_config/i_remote_config.dart';
 
 ///
 export 'package:softi_packages/softi_packages.dart';

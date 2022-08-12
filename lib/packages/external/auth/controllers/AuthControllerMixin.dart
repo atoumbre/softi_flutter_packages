@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:softi_packages/packages/auth/interfaces/i_auth_service.dart';
-import 'package:softi_packages/packages/auth/models/auth_user.dart';
+import 'package:softi_packages/packages/external/auth/interfaces/i_auth_service.dart';
+import 'package:softi_packages/packages/external/auth/models/auth_user.dart';
 import 'package:softi_packages/packages/core/controllers/BaseController.dart';
 
 mixin AuthControllerMixin on IBaseController {

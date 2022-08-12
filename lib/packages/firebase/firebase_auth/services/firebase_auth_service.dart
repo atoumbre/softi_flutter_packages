@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:softi_packages/packages/auth/interfaces/i_auth_service.dart';
-import 'package:softi_packages/packages/auth/models/auth_user.dart';
+import 'package:softi_packages/packages/external/auth/interfaces/i_auth_service.dart';
+import 'package:softi_packages/packages/external/auth/models/auth_user.dart';
 import 'package:softi_packages/packages/core/services/BaseService.dart';
 import 'package:softi_packages/packages/firebase/firebase_auth/models/settings.dart';
 import 'package:softi_packages/packages/firebase/firebase_auth/services/firebase_auth_provider.dart';

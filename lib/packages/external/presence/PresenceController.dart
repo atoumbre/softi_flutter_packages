@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:softi_packages/packages/core/controllers/BaseLifeCycleController.dart';
-import 'package:softi_packages/packages/services/presence/presence_service_interface.dart';
+import 'package:softi_packages/packages/external/presence/presence_service_interface.dart';
 
 enum UserPresenceState { online, offline, away }
 

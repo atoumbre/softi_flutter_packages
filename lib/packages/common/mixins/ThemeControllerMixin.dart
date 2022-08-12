@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:softi_packages/packages/app/interfaces/local_storage_interface.dart';
+import 'package:softi_packages/packages/app/local_storage/local_storage_interface.dart';
 import 'package:softi_packages/packages/core/controllers/BaseController.dart';
 
 mixin ThemeControllerMixin on IBaseController {

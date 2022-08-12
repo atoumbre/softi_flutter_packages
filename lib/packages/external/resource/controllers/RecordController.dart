@@ -1,7 +1,7 @@
 import 'package:softi_packages/packages/core/controllers/BaseViewController.dart';
-import 'package:softi_packages/packages/resource/controllers/RecordControllerMixin.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
-import 'package:softi_packages/packages/resource/models/ResourceRecord.dart';
+import 'package:softi_packages/packages/external/resource/controllers/RecordControllerMixin.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
+import 'package:softi_packages/packages/external/resource/models/ResourceRecord.dart';
 
 class RecordController<T extends IResourceData> extends IBaseViewController with RecordControllerMixin<T> {
   @override

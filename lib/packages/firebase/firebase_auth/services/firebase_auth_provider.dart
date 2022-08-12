@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:softi_packages/packages/auth/models/auth_user.dart';
+import 'package:softi_packages/packages/external/auth/models/auth_user.dart';
 
 abstract class FirebaseAuthProvider {
   FirebaseAuth get firebaseAuth;

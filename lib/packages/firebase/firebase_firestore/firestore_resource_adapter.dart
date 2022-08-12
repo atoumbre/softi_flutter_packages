@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:softi_packages/packages/firebase/firebase_firestore/firebase_deserializer.dart';
 import 'package:softi_packages/packages/firebase/firebase_firestore/firebase_resource.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource_adapter.dart';
-import 'package:softi_packages/packages/resource/models/query.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource_adapter.dart';
+import 'package:softi_packages/packages/external/resource/models/query.dart';
 
 class FirestoreResourceAdapter<T extends IResourceData> extends IResourceAdapter<T> {
   final FirebaseFirestore _firestoreInstance;

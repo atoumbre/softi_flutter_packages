@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:softi_packages/packages/services/remote_Storage/i_remote_storage.dart';
+import 'package:softi_packages/packages/external/remote_Storage/i_remote_storage.dart';
 
 var _eventTypeMap = {
   TaskState.error: UploadState.error,

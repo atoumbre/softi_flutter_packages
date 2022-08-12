@@ -3,9 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource_adapter.dart';
-import 'package:softi_packages/packages/resource/models/query.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource_adapter.dart';
+import 'package:softi_packages/packages/external/resource/models/query.dart';
 
 class Ext<T extends IResourceData> {
   T record;

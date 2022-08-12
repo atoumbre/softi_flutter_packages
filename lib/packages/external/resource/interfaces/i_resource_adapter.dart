@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
-import 'package:softi_packages/packages/resource/models/query.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
+import 'package:softi_packages/packages/external/resource/models/query.dart';
 
 abstract class IResourceAdapter<T extends IResourceData> {
   late IResource<T> _res;

@@ -1,7 +1,7 @@
 import 'package:softi_packages/packages/core/controllers/BaseViewController.dart';
 import 'package:softi_packages/packages/form/controllers/FormControllerMixin.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource_base.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource_base.dart';
 
 abstract class ResourceFormController<T extends IResourceData> extends IBaseViewController with FormControllerMixin<T> {
   final IResourceBase db;
@@ -13,16 +13,18 @@ abstract class ResourceFormController<T extends IResourceData> extends IBaseView
   T? _editingRecord;
 
   @override
-  Future<void> onInit() async {
+  void onInit() {
     super.onInit();
 
-    if (refreshRecord && record.isValid()) {
-      _editingRecord = (await db.api<T>().get(record.getId(), reactive: false).first);
-    } else {
-      _editingRecord = record;
-    }
+    Future(() async {
+      if (refreshRecord && record.isValid()) {
+        _editingRecord = (await db.api<T>().get(record.getId(), reactive: false).first);
+      } else {
+        _editingRecord = record;
+      }
 
-    await initForm(_editingRecord);
+      await initForm(_editingRecord);
+    });
   }
 
   @override

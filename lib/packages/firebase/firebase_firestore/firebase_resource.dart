@@ -1,4 +1,4 @@
-import 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
 
 class FirestoreResource<T extends IResourceData> extends IResource<T> {
   final Deserializer<T> fromJson;

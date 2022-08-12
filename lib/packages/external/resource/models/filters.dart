@@ -1,4 +1,4 @@
-import 'package:softi_packages/packages/resource/models/query.dart';
+import 'package:softi_packages/packages/external/resource/models/query.dart';
 
 // abstract class IFilter {
 //   QueryParameters build();

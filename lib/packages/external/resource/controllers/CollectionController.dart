@@ -1,10 +1,10 @@
 import 'package:softi_packages/packages/core/controllers/BaseViewController.dart';
-import 'package:softi_packages/packages/resource/controllers/CollectionControllerMixin.dart';
-import 'package:softi_packages/packages/resource/interfaces/i_resource.dart';
-import 'package:softi_packages/packages/resource/models/ResourceCollection.dart';
-import 'package:softi_packages/packages/resource/models/ResourceCollectionWithTransform.dart';
-import 'package:softi_packages/packages/resource/models/filters.dart';
-import 'package:softi_packages/packages/resource/models/query.dart';
+import 'package:softi_packages/packages/external/resource/controllers/CollectionControllerMixin.dart';
+import 'package:softi_packages/packages/external/resource/interfaces/i_resource.dart';
+import 'package:softi_packages/packages/external/resource/models/ResourceCollection.dart';
+import 'package:softi_packages/packages/external/resource/models/ResourceCollectionWithTransform.dart';
+import 'package:softi_packages/packages/external/resource/models/filters.dart';
+import 'package:softi_packages/packages/external/resource/models/query.dart';
 
 class CollectionController<T extends IResourceData> extends IBaseViewController with CollectionControllerMixin<T> {
   @override

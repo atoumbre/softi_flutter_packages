@@ -1,6 +1,6 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:softi_packages/packages/app/interfaces/local_storage_interface.dart';
+import 'package:softi_packages/packages/app/local_storage/local_storage_interface.dart';
 
 class LocalStore extends ILocalStore {
   final GetStorage _storage;
