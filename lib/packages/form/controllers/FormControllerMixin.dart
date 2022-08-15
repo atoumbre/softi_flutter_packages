@@ -33,7 +33,11 @@ mixin FormControllerMixin<T> on IBaseViewController {
 
       if (formKey().currentState!.validate()) {
         /// Update record with changes from Form
-        var _formResult = SoftiHelpers.mergeMap([initialValue(), formKey().currentState!.value], acceptNull: true);
+        var _formResult = SoftiHelpers.mergeMap(
+          [initialValue(), formKey().currentState!.value],
+          acceptNull: true,
+          recursive: false,
+        );
 
         /// Fire onSubmit for additional changes
         var _record = await beforSave(_formResult);

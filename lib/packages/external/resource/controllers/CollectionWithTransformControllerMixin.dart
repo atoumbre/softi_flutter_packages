@@ -7,11 +7,11 @@ import 'package:softi_packages/packages/external/resource/models/filters.dart';
 import 'package:softi_packages/packages/external/resource/models/query.dart';
 
 mixin CollectionWithTransformControllerMixin<T extends IResourceData, U extends Ext<T>> on IBaseViewController {
-  @override
-  Future<void> onReady() async {
-    super.onReady();
-    // initCollection();
-  }
+  // @override
+  // Future<void> onReady() async {
+  //   super.onReady();
+  //   // initCollection();
+  // }
 
   @override
   Future<void> onClose() async => disposeCollection();
@@ -46,9 +46,9 @@ mixin CollectionWithTransformControllerMixin<T extends IResourceData, U extends 
     // });
   }
 
-  void initCollection() {
-    requestData();
-  }
+  // void initCollection() {
+  //   requestData();
+  // }
 
   void disposeCollection() {
     print('Dispose Collection Controller');
