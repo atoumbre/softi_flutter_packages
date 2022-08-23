@@ -320,7 +320,7 @@ packages:
       name: flutter_secure_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.0"
+    version: "6.0.0"
   flutter_secure_storage_linux:
     dependency: transitive
     description:
@@ -610,7 +610,7 @@ packages:
       name: photo_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.4"
+    version: "2.2.1"
   platform:
     dependency: transitive
     description:
@@ -728,6 +728,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.1"
+  uuid:
+    dependency: "direct main"
+    description:
+      name: uuid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.6"
   vector_math:
     dependency: transitive
     description:
@@ -776,7 +783,7 @@ packages:
       name: wechat_assets_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.3.4"
+    version: "8.0.0"
   wechat_camera_picker:
     dependency: "direct main"
     description:

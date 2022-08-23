@@ -18,63 +18,47 @@ enum MediaSource { file, network, memory }
 enum PickerSource { camera, gallery, file }
 
 class MediaAsset {
-  final dynamic rawEntity;
-  final Uint8List? data;
-  final MediaFormat? format;
   final MediaSource? source;
+  final MediaFormat? format;
+  final Uint8List? data;
   final Uint8List? thumbData;
+  final dynamic rawEntity;
 
   MediaAsset({
-    this.thumbData,
     this.source,
     this.format,
     this.data,
+    this.thumbData,
     this.rawEntity,
   });
 }
 
-// class MemoryMediaAsset extends MediaAsset {
-//   final Uint8List? data;
-
-//   MemoryMediaAsset({
-//     this.data,
-//     MediaFormat? format,
-//     Uint8List? thumbData,
-//     rawEntity,
-//   }) : super(
-//           thumbData: thumbData,
-//           rawEntity: rawEntity,
-//           format: format,
-//           source: MediaSource.memory,
-//         );
-// }
-
 class NetworkMediaAsset extends MediaAsset {
-  final String? title;
+  final String? id;
   final String? url;
+  final String? thumbUrl;
 
   NetworkMediaAsset({
-    this.title,
+    this.id,
     this.url,
-    MediaFormat? format,
-    Uint8List? thumbData,
-    rawEntity,
-  }) : super(thumbData: thumbData, rawEntity: rawEntity, format: format, source: MediaSource.network);
+    this.thumbUrl,
+    super.thumbData,
+    super.format,
+    super.rawEntity,
+  }) : super(source: MediaSource.network);
 }
 
 class FileMediaAsset extends MediaAsset {
   final String? id;
   final XFile? file;
+  final XFile? thumbfile;
 
   FileMediaAsset({
     this.id,
     this.file,
-    thumbData,
-    format,
-    rawEntity,
-  }) : super(
-          thumbData: thumbData,
-          rawEntity: rawEntity,
-          format: format,
-        );
+    this.thumbfile,
+    super.thumbData,
+    super.format,
+    super.rawEntity,
+  }) : super(source: MediaSource.file);
 }

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:softi_packages/packages/services/device/media_picker/media_picker_interface.dart';
+import 'package:softi_packages/packages/services/device/media_picker/interfaces/media_picker_interface.dart';
 import 'package:softi_packages/packages/services/device/media_picker/models.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';

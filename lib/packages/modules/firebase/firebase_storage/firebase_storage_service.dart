@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:softi_packages/packages/services/external/remote_Storage/i_remote_storage.dart';
+import 'package:path/path.dart' as p;
+import 'package:uuid/uuid.dart';
 
 var _eventTypeMap = {
   TaskState.error: UploadState.error,
@@ -15,88 +16,48 @@ var _eventTypeMap = {
 };
 
 class FirebaseStorageService extends IRemoteStorageService {
-  @override
-  Future<UploadEvent> uploadMedia({
-    required dynamic imageToUpload,
-    required String title,
-    required bool compressed,
-    bool addTimestamp = false,
-  }) async {
-    var completer = Completer<UploadEvent>();
+  // @override
+  // Future<UploadEvent> uploadMediaSerice({
+  //   required Uint8List imageToUpload,
+  //   required String remotePath,
+  //   required bool compressed,
+  //   bool addTimestamp = false,
+  // }) async {
+  //   var completer = Completer<UploadEvent>();
 
-    var _result = await uploadMediaStream(
-      imageToUpload: imageToUpload,
-      title: title,
-      addTimestamp: addTimestamp,
-      compressed: compressed,
-    );
+  //   var _result = await _uploadMediaStream(
+  //     imageToUpload: imageToUpload,
+  //     remotePath: remotePath,
+  //     compressed: compressed,
+  //   );
 
-    var sub;
+  //   var sub;
 
-    sub = _result.listen((event) {
-      if (event.type == UploadState.running) return;
-      sub.cancel();
-      completer.complete(event);
-    });
+  //   sub = _result.listen((event) {
+  //     if (event.type == UploadState.running) return;
+  //     sub.cancel();
+  //     completer.complete(event);
+  //   });
 
-    return completer.future;
-    // print('Start up load');
-
-    // var imageFileName = title + (addTimestamp ? DateTime.now().millisecondsSinceEpoch.toString() : '');
-
-    // final firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
-
-    // UploadTask uploadTask;
-
-    // if (compressed) {
-    //   var _imageToUpload = await (imageToUpload is File
-    //       ? FlutterImageCompress.compressWithFile(
-    //           (imageToUpload).absolute.path,
-    //           minWidth: 640,
-    //           minHeight: 640,
-    //           // quality: 94,
-    //         )
-    //       : FlutterImageCompress.compressWithList(
-    //           imageToUpload,
-    //           minWidth: 640,
-    //           minHeight: 640,
-    //           // quality: 94,
-    //         ));
-
-    //   uploadTask = firebaseStorageRef.putData(_imageToUpload!);
-    // } else {
-    //   uploadTask = imageToUpload is File ? firebaseStorageRef.putFile(imageToUpload) : firebaseStorageRef.putData(imageToUpload as Uint8List);
-    // }
-
-    // return uploadTask.then<UploadEvent>((event) async {
-    //   return UploadEvent(
-    //       type: _eventTypeMap[event.state],
-    //       total: event.totalBytes.toDouble(),
-    //       uploaded: event.bytesTransferred.toDouble(),
-    //       // rawrResult: event.state == TaskState.success ? event.metadata. : null,
-    //       result: event.state != TaskState.success
-    //           ? null
-    //           : RemoteAsset(
-    //               url: await event.ref.getDownloadURL(),
-    //               title: event.metadata!.fullPath,
-    //             ));
-    // });
-  }
+  //   return completer.future;
+  // }
 
   @override
-  Future<Stream<UploadEvent>> uploadMediaStream({
-    required dynamic imageToUpload,
-    required String title,
+  Future<Stream<UploadEvent>> uploadMediaService({
+    required Uint8List imageToUpload,
+    String folder = '',
+    String identifier = '',
     required bool compressed,
-    bool addTimestamp = false,
+    required String localIdentifier,
   }) async {
     print('Start up load');
 
-    var imageFileName = title + (addTimestamp ? DateTime.now().millisecondsSinceEpoch.toString() : '');
+    var imageFileName = p.join(folder, (identifier == '') ? Uuid().v4() : identifier);
 
     final firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
 
-    var uploadData = await (imageToUpload is File ? imageToUpload.readAsBytes() : Future.value(imageToUpload as Uint8List));
+    // var uploadData = await (imageToUpload is File ? imageToUpload.readAsBytes() : Future.value(imageToUpload as Uint8List));
+    var uploadData = imageToUpload;
 
     uploadData = await (compressed
         ? FlutterImageCompress.compressWithList(
@@ -116,41 +77,19 @@ class FirebaseStorageService extends IRemoteStorageService {
               ? null
               : RemoteAsset(
                   url: await event.ref.getDownloadURL(),
-                  title: event.metadata!.fullPath,
+                  thumbUrl: await event.ref.getDownloadURL(),
+                  folder: p.dirname(event.metadata!.fullPath),
+                  identifier: p.basename(event.metadata!.fullPath),
                 ));
     });
 
     return __stream;
-
-    // var _imageToUpload =
-
-    //       .then((value) {
-    //        _comp.complete(value)
-    //         uploadTask = firebaseStorageRef.putData(_imageToUpload!);
-    //       });
-
-    //     uploadTask = imageToUpload is File ? firebaseStorageRef.putFile(imageToUpload) : firebaseStorageRef.putData(imageToUpload as Uint8List);
-    //   }
-
-    //   return uploadTask;
-    // }).map;
-
-    // return uploadTask.snapshotEvents.asyncMap<UploadEvent>((event) async {
-    //   return UploadEvent(
-    //       type: _eventTypeMap[event.state],
-    //       total: event.totalBytes.toDouble(),
-    //       uploaded: event.bytesTransferred.toDouble(),
-    //       result: event.state != TaskState.success
-    //           ? null
-    //           : RemoteAsset(
-    //               url: await event.ref.getDownloadURL(),
-    //               title: event.metadata!.fullPath,
-    //             ));
-    // });
   }
 
   @override
-  Future deleteMedia(String imageFileName) async {
+  Future deleteMedia(RemoteAsset remoteAsset) async {
+    var imageFileName = p.join(remoteAsset.folder, remoteAsset.identifier);
+
     final firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
 
     try {

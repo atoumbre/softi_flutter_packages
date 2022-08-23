@@ -41,8 +41,8 @@ export 'package:softi_packages/packages/services/device/location/LocationControl
 export 'package:softi_packages/packages/services/device/location/location_service.dart';
 export 'package:softi_packages/packages/services/device/location/location_service_intervace.dart';
 export 'package:softi_packages/packages/services/device/media_picker/camera_service.dart';
-export 'package:softi_packages/packages/services/device/media_picker/camera_service_interface.dart';
-export 'package:softi_packages/packages/services/device/media_picker/media_picker_interface.dart';
+export 'package:softi_packages/packages/services/device/media_picker/interfaces/camera_service_interface.dart';
+export 'package:softi_packages/packages/services/device/media_picker/interfaces/media_picker_interface.dart';
 export 'package:softi_packages/packages/services/device/media_picker/models.dart';
 export 'package:softi_packages/packages/services/device/media_picker/wechat_media_picker_service.dart';
 

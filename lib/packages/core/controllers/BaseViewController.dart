@@ -7,9 +7,46 @@ enum ControllerStatus { idle, busy, error }
 
 abstract class IBaseViewController extends IBaseController {
   final controllerStatus = ControllerStatus.idle.obs;
-  final lastResult = Rx<Result<ServiceFailure, dynamic>>(Success(null));
+  // final lastResult = Rx<Result<ServiceFailure, dynamic>>(Success(null));
 
   // ControllerStatus get controllerStatus => _controllerStatus();
+
+  Future<List<Result<ServiceFailure, R>>> serviceMultiTaskHandler<R>(
+    Iterable<Future<R> Function()> tasks, {
+    Future<void> Function(R)? onSuccess,
+    Future<void> Function(ServiceFailure)? onFailure,
+  }) async {
+    // Protect
+    if (isBusy) {
+      return [
+        Error<ServiceFailure, R>(ServiceFailure(
+          code: 'BUSY_CONTROLLER',
+          service: '_INTERNAL_',
+        ))
+      ];
+    }
+
+    changeStatusToBusy();
+
+    try {
+      var result = await Future.wait(tasks.map((task) => task()));
+
+      if (onSuccess != null) await Future.wait(result.map((r) => onSuccess(r)));
+
+      changeStatusToIdle();
+      return result.map((r) => Success<ServiceFailure, R>(r)).toList();
+    } on ServiceFailure catch (e) {
+      if (onFailure != null) await onFailure(e);
+
+      changeStatusToError();
+      return [Error(e)];
+    } catch (e) {
+      changeStatusToError();
+      rethrow;
+    } finally {
+      // toggleIdle();
+    }
+  }
 
   Future<Result<ServiceFailure, R>> serviceTaskHandler<R>(
     Future<R> Function() task, {
@@ -31,7 +68,7 @@ abstract class IBaseViewController extends IBaseController {
 
       if (onSuccess != null) await onSuccess(result);
 
-      lastResult(Success(result));
+      // lastResult(Success(result));
 
       changeStatusToIdle();
 
@@ -39,7 +76,7 @@ abstract class IBaseViewController extends IBaseController {
     } on ServiceFailure catch (e) {
       if (onFailure != null) await onFailure(e);
 
-      lastResult(Error(e));
+      // lastResult(Error(e));
 
       changeStatusToError();
 
