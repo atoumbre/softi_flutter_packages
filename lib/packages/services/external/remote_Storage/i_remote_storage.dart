@@ -12,14 +12,14 @@ enum UploadState {
 }
 
 class RemoteAsset {
-  // final String? title;
+  final String format;
   final String identifier;
   final String folder;
   final String url;
   final String thumbUrl;
 
   const RemoteAsset({
-    // this.title,
+    required this.format,
     required this.identifier,
     required this.folder,
     required this.url,
@@ -29,7 +29,7 @@ class RemoteAsset {
   String get fullPath => p.join(folder, identifier);
 
   static RemoteAsset fromJson(Map<String, dynamic> json) => RemoteAsset(
-        // title: json['title'] as String? ?? '',
+        format: json['format'] as String? ?? '',
         identifier: json['identifier'] as String? ?? '',
         folder: json['folder'] as String? ?? '',
         url: json['url'] as String? ?? '',
@@ -38,8 +38,8 @@ class RemoteAsset {
 
   Map<String, dynamic> toJson() {
     var instance = this;
-    // 'title': instance.title,
     return <String, dynamic>{
+      'format': instance.format,
       'identifier': instance.identifier,
       'folder': instance.folder,
       'url': instance.url,

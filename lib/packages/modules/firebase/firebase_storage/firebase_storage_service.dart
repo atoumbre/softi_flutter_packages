@@ -76,10 +76,11 @@ class FirebaseStorageService extends IRemoteStorageService {
           result: event.state != TaskState.success
               ? null
               : RemoteAsset(
+                  format: p.extension(event.metadata!.fullPath),
                   url: await event.ref.getDownloadURL(),
                   thumbUrl: await event.ref.getDownloadURL(),
                   folder: p.dirname(event.metadata!.fullPath),
-                  identifier: p.basename(event.metadata!.fullPath),
+                  identifier: p.basenameWithoutExtension(event.metadata!.fullPath),
                 ));
     });
 
