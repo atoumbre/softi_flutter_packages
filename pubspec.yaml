@@ -1,41 +1,40 @@
 name: softi_packages
 description: A new Flutter package project.
 version: 0.0.1
-homepage:
+homepage: null
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
+  cloud_firestore: ^3.4.3
+  connectivity: ^3.0.6
+  firebase_auth: ^3.5.1
+  firebase_storage: ^10.3.3
   flutter:
     sdk: flutter
-    
-  connectivity: ^3.0.6
-  # location: ^4.4.0
-  wechat_camera_picker: ^3.4.0
-  image_cropper: ^3.0.0
-  wechat_assets_picker: ^8.0.0
-  firebase_auth: ^3.5.1
-  sign_in_with_apple: ^4.1.0
-  google_sign_in: ^5.4.0
-  cloud_firestore: ^3.4.3
-  firebase_storage: ^10.3.3
-  flutter_image_compress: ^1.1.0
-  flutter_form_builder: ^7.4.0
-  get: ^4.6.5
   flutter_easyloading: ^3.0.5
-  get_storage: ^2.0.3
-  flutter_secure_storage: ^6.0.0
-  multiple_result: ^1.0.4
   flutter_facebook_auth: ^4.4.0
+  flutter_form_builder: ^7.4.0
+  flutter_image_compress: ^1.1.0
+  flutter_secure_storage: ^6.0.0
+  get: ^4.6.5
+  get_storage: ^2.0.3
+  google_sign_in: ^5.4.0
+  image_cropper: ^3.0.0
+  json_annotation: ^4.6.0
+  multiple_result: ^1.0.4
+  sign_in_with_apple: ^4.1.0
   uuid: ^3.0.6
+  wechat_assets_picker: ^8.0.0
+  wechat_camera_picker: ^3.4.0
 
 dev_dependencies:
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
 
-flutter:
+flutter: null
 
-# find . -type f > ../files.txt     
+# find . -type f > ../files.txt

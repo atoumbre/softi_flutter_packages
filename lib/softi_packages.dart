@@ -94,4 +94,9 @@ export 'package:softi_packages/packages/services/external/remote_Storage/i_remot
 export 'package:softi_packages/packages/services/external/remote_config/i_remote_config.dart';
 
 ///
-export 'package:softi_packages/softi_packages.dart';
+export 'package:softi_packages/packages/modules/translation/t_string.dart';
+export 'package:softi_packages/packages/modules/translation/t_string.dart';
+
+
+
+//  export 'package:softi_packages/softi_packages.dart';
