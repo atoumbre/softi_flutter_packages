@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 class TString {
   const TString({
-    required this.input,
+    this.input = '',
     this.output = const {},
     this.manual = const {},
   });
@@ -58,10 +58,36 @@ class TString {
     //   return Get.translations["${Get.locale!.languageCode}_${Get.locale!.countryCode}"]![this]!;
     // }
 
-    var lang = Get.locale?.languageCode ?? Get.fallbackLocale?.languageCode;
+    var locale = Get.locale ?? Get.fallbackLocale ?? Get.deviceLocale;
 
-    if (lang == null) return input;
-    return manual[lang] ?? output[lang] ?? input;
+    var langAndcountry = "${locale!.languageCode}_${Get.locale!.countryCode}";
+    var lang = locale.languageCode;
+
+    return manual[langAndcountry] ?? output[langAndcountry] ?? manual[lang] ?? output[lang] ?? input;
+  }
+
+  String trArgs({List<String> args = const [], Map<String, String> params = const {}}) {
+    var trans = tr;
+
+    if (params.isNotEmpty) {
+      params.forEach((key, value) {
+        trans = trans.replaceAll('@$key', value);
+      });
+    }
+
+    if (args.isNotEmpty) {
+      for (final arg in args) {
+        trans = trans.replaceFirst(RegExp(r'%s'), arg.toString());
+      }
+    }
+    return trans;
+  }
+
+  String trPlural(num i, [List<String> args = const [], Map<String, String> params = const {}]) {
+    var trans = trArgs(args: args, params: {...params, 'count': i.toString()});
+    var transList = trans.split('|');
+
+    return i == 1 ? transList[0] : (transList.length == 1 ? transList[0] : transList[1]);
   }
 }
 

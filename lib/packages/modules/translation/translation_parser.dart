@@ -78,6 +78,10 @@ abstract class TranslationParser {
       }
     }
 
-    return {'inputs': inputs, 'manuals': manuals};
+    return {'input': inputs, 'manual': manuals};
   }
+
+  // Map<String, dynamic> parse() {
+  //   return this.import({...this.export()});
+  // }
 }

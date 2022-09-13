@@ -11,19 +11,17 @@ abstract class IBaseViewController extends IBaseController {
 
   // ControllerStatus get controllerStatus => _controllerStatus();
 
-  Future<List<Result<ServiceFailure, R>>> serviceMultiTaskHandler<R>(
+  Future<Result<ServiceFailure, List<R>>> serviceMultiTaskHandler<R>(
     Iterable<Future<R> Function()> tasks, {
     Future<void> Function(R)? onSuccess,
     Future<void> Function(ServiceFailure)? onFailure,
   }) async {
     // Protect
     if (isBusy) {
-      return [
-        Error<ServiceFailure, R>(ServiceFailure(
-          code: 'BUSY_CONTROLLER',
-          service: '_INTERNAL_',
-        ))
-      ];
+      return Error<ServiceFailure, List<R>>(ServiceFailure(
+        code: 'BUSY_CONTROLLER',
+        service: '_INTERNAL_',
+      ));
     }
 
     changeStatusToBusy();
@@ -34,12 +32,12 @@ abstract class IBaseViewController extends IBaseController {
       if (onSuccess != null) await Future.wait(result.map((r) => onSuccess(r)));
 
       changeStatusToIdle();
-      return result.map((r) => Success<ServiceFailure, R>(r)).toList();
+      return Success<ServiceFailure, List<R>>(result);
     } on ServiceFailure catch (e) {
       if (onFailure != null) await onFailure(e);
 
       changeStatusToError();
-      return [Error(e)];
+      return Error(e);
     } catch (e) {
       changeStatusToError();
       rethrow;
