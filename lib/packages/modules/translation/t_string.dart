@@ -2,22 +2,52 @@ import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class TString {
-  const TString({
-    this.input = '',
-    this.output = const {},
-    this.manual = const {},
-  });
-
-  // const TString.i(String key)
-  //     : input = key,
-  //       manual = const {},
-  //       output = const {};
-
-  // final String key;
   final String input;
   final Map<String, String> output;
   final Map<String, String> manual;
 
+  /// Default contructor
+  const TString({
+    this.input = '',
+    this.output = const <String, String>{},
+    this.manual = const <String, String>{},
+  });
+
+  /// Manual translation contructor
+  const TString.t(String key, [manual = const <String, String>{}])
+      : input = key,
+        manual = manual,
+        output = const <String, String>{};
+
+  String get tr {
+    var locale = Get.locale ?? Get.fallbackLocale ?? Get.deviceLocale;
+    var lang = locale!.languageCode;
+    var langAndcountry = "${lang}${Get.locale!.countryCode != null ? '_${Get.locale!.countryCode}' : ''}";
+
+    return manual[langAndcountry] ?? manual[lang] ?? output[langAndcountry] ?? output[lang] ?? input;
+  }
+
+  call({int count = 1, List<String> args = const [], Map<String, String> params = const {}}) {
+    var trans = tr;
+
+    if (params.isNotEmpty) {
+      params.forEach((key, value) {
+        trans = trans.replaceAll('@$key', value);
+      });
+    }
+
+    if (args.isNotEmpty) {
+      for (final arg in args) {
+        trans = trans.replaceFirst(RegExp(r'%s'), arg.toString());
+      }
+    }
+
+    var transList = trans.split('|');
+
+    return count == 1 ? transList[0] : (transList.length == 1 ? transList[0] : transList[1]);
+  }
+
+  /// ENCODE - DECODE
   TString copyWith({
     String? input,
     Map<String, String>? output = const {},
@@ -46,49 +76,30 @@ class TString {
     };
   }
 
-  String get tr {
-    // print('language');
-    // print(Get.locale!.languageCode);
-    // print('contains');
-    // print(Get.translations.containsKey(Get.locale!.languageCode));
-    // print(Get.translations.keys);
-    // Returns the key if locale is null.
+  // String trArgs({List<String> args = const [], Map<String, String> params = const {}}) {
+  //   var trans = tr;
 
-    // if (_fullLocaleAndKey) {
-    //   return Get.translations["${Get.locale!.languageCode}_${Get.locale!.countryCode}"]![this]!;
-    // }
+  //   if (params.isNotEmpty) {
+  //     params.forEach((key, value) {
+  //       trans = trans.replaceAll('@$key', value);
+  //     });
+  //   }
 
-    var locale = Get.locale ?? Get.fallbackLocale ?? Get.deviceLocale;
+  //   if (args.isNotEmpty) {
+  //     for (final arg in args) {
+  //       trans = trans.replaceFirst(RegExp(r'%s'), arg.toString());
+  //     }
+  //   }
+  //   return trans;
+  // }
 
-    var langAndcountry = "${locale!.languageCode}_${Get.locale!.countryCode}";
-    var lang = locale.languageCode;
+  // String trPlural(num i, [List<String> args = const [], Map<String, String> params = const {}]) {
+  //   var trans = trArgs(args: args, params: {...params, 'count': i.toString()});
+  //   var transList = trans.split('|');
 
-    return manual[langAndcountry] ?? output[langAndcountry] ?? manual[lang] ?? output[lang] ?? input;
-  }
+  //   return i == 1 ? transList[0] : (transList.length == 1 ? transList[0] : transList[1]);
+  // }
 
-  String trArgs({List<String> args = const [], Map<String, String> params = const {}}) {
-    var trans = tr;
-
-    if (params.isNotEmpty) {
-      params.forEach((key, value) {
-        trans = trans.replaceAll('@$key', value);
-      });
-    }
-
-    if (args.isNotEmpty) {
-      for (final arg in args) {
-        trans = trans.replaceFirst(RegExp(r'%s'), arg.toString());
-      }
-    }
-    return trans;
-  }
-
-  String trPlural(num i, [List<String> args = const [], Map<String, String> params = const {}]) {
-    var trans = trArgs(args: args, params: {...params, 'count': i.toString()});
-    var transList = trans.split('|');
-
-    return i == 1 ? transList[0] : (transList.length == 1 ? transList[0] : transList[1]);
-  }
 }
 
 class TStringConverter implements JsonConverter<TString, Map<String, dynamic>> {

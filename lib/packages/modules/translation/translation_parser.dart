@@ -1,13 +1,12 @@
 abstract class TranslationParser {
   Map<String, dynamic> toJson();
 
-  Map<String, dynamic> import(Map<String, dynamic> translationsMap) {
+  Map<String, dynamic> import(Map<String, dynamic> translationsMap, List<String> langList) {
     var initialMap_ = toJson();
 
     Map<String, String> inputs = translationsMap['input'] ?? <String, String>{};
     Map<String, Map<String, String>> outputs = Map<String, Map<String, String>>.from(translationsMap['output'] ?? {});
     Map<String, Map<String, String>> manuals = Map<String, Map<String, String>>.from(translationsMap['manual'] ?? {});
-    var langList = outputs.keys;
 
     for (var inputEntry in inputs.entries) {
       if (initialMap_[inputEntry.key] != null) {
@@ -15,11 +14,11 @@ abstract class TranslationParser {
         Map<String, String> output = {...initialMap_[inputEntry.key]['output']};
         Map<String, String> manual = {...initialMap_[inputEntry.key]['manual']};
         for (var lang in langList) {
-          if (outputs[lang]?[inputEntry.key] != null) {
-            output[lang] = outputs[lang]![inputEntry.key]!;
+          if (outputs[inputEntry.key]?[lang] != null) {
+            output[lang] = outputs[inputEntry.key]![lang]!;
           }
-          if (manuals[lang]?[inputEntry.key] != null) {
-            manual[lang] = manuals[lang]![inputEntry.key]!;
+          if (manuals[inputEntry.key]?[lang] != null) {
+            manual[lang] = manuals[inputEntry.key]![lang]!;
           }
         }
         initialMap_[inputEntry.key]['input'] = input;

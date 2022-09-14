@@ -21,7 +21,6 @@ export 'package:softi_packages/packages/common/widgets/StateFullWrapper.dart';
 export 'package:softi_packages/packages/services/auth/controllers/AuthControllerMixin.dart';
 export 'package:softi_packages/packages/services/auth/interfaces/i_auth_service.dart';
 export 'package:softi_packages/packages/services/auth/models/auth_user.dart';
-export 'package:softi_packages/packages/services/auth/models/auth_user.freezed.dart';
 
 ///
 export 'package:softi_packages/packages/core/controllers/BaseController.dart';
@@ -95,7 +94,8 @@ export 'package:softi_packages/packages/services/external/remote_config/i_remote
 
 ///
 export 'package:softi_packages/packages/modules/translation/t_string.dart';
-export 'package:softi_packages/packages/modules/translation/t_string.dart';
+export 'package:softi_packages/packages/modules/translation/translation_parser.dart';
+export 'package:softi_packages/packages/modules/translation/translation.dart';
 
 
 

@@ -19,6 +19,7 @@ dependencies:
   flutter_form_builder: ^7.4.0
   flutter_image_compress: ^1.1.0
   flutter_secure_storage: ^6.0.0
+  freezed_annotation: ^2.1.0
   get: ^4.6.5
   get_storage: ^2.0.3
   google_sign_in: ^5.4.0
@@ -31,9 +32,12 @@ dependencies:
   wechat_camera_picker: ^3.4.0
 
 dev_dependencies:
+  build_runner: ^2.2.1
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  freezed: ^2.1.0+1
+  json_serializable: ^6.3.2
 
 flutter: null
 
