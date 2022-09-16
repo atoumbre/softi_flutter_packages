@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:softi_packages/packages/modules/translation/utils/date.dart';
+import 'package:softi_packages/packages/modules/translation/date_converter.dart';
 import 'package:softi_packages/softi_packages.dart';
 
-part 'translation.freezed.dart';
-part 'translation.g.dart';
+part 'translation_model.freezed.dart';
+part 'translation_model.g.dart';
 
 @freezed
 class TTranslation extends IResourceData with BaseResourceDataMixin, _$TTranslation {

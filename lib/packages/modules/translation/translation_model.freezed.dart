@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'translation.dart';
+part of 'translation_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -151,7 +151,7 @@ class __$$_TTranslationCopyWithImpl<$Res>
 
 @CustomDateTimeConverter()
 @JsonSerializable(explicitToJson: true)
-class _$_TTranslation extends _TTranslation with DiagnosticableTreeMixin {
+class _$_TTranslation extends _TTranslation {
   _$_TTranslation(
       {final Map<String, String>? input,
       final Map<String, Map<String, String>>? output,
@@ -200,20 +200,8 @@ class _$_TTranslation extends _TTranslation with DiagnosticableTreeMixin {
   final DateTime? updatedAt;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'TTranslation(input: $input, output: $output, manual: $manual, createdAt: $createdAt, updatedAt: $updatedAt)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'TTranslation'))
-      ..add(DiagnosticsProperty('input', input))
-      ..add(DiagnosticsProperty('output', output))
-      ..add(DiagnosticsProperty('manual', manual))
-      ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
 
   @override
