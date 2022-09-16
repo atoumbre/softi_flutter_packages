@@ -43,10 +43,10 @@ abstract class FirebaseAuthProvider {
     });
   }
 
-  static AuthUser? userFromFirebase(UserCredential userCredential) {
+  static Future<AuthUser?> userFromFirebase(UserCredential userCredential) async {
     var user = userCredential.user;
 
-    var authUser = authUserFromUser(user);
+    var authUser = await authUserFromUser(user);
 
     authUser?.setIsNew(
       userCredential.additionalUserInfo?.isNewUser ?? false,
@@ -55,7 +55,7 @@ abstract class FirebaseAuthProvider {
     return authUser;
   }
 
-  static AuthUser? authUserFromUser(User? user) {
+  static Future<AuthUser?> authUserFromUser(User? user) async {
     if (user == null) {
       return null;
     }
@@ -89,6 +89,7 @@ abstract class FirebaseAuthProvider {
       appleUserInfo: user.providerData.firstWhere((element) => element.providerId == 'apple.com', orElse: () => UserInfo({})),
       googleUserInfo: user.providerData.firstWhere((element) => element.providerId == 'google.com', orElse: () => UserInfo({})),
       facebookUserInfo: user.providerData.firstWhere((element) => element.providerId == 'facebook.com', orElse: () => UserInfo({})),
+      token: await user.getIdTokenResult(),
     );
 
     return _authUser;

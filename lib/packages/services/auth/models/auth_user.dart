@@ -23,6 +23,8 @@ class AuthUser {
   final dynamic googleUserInfo;
   final dynamic facebookUserInfo;
 
+  final dynamic token;
+
   AuthUser({
     required this.uid,
     this.isNew = false,
@@ -37,6 +39,7 @@ class AuthUser {
     this.appleUserInfo,
     this.googleUserInfo,
     this.facebookUserInfo,
+    this.token,
   });
 
   // const factory AuthUser({

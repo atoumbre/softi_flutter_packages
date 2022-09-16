@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:softi_packages/packages/modules/translation/date_converter.dart';
-import 'package:softi_packages/softi_packages.dart';
+import 'package:softi_packages/packages/common/convertors/date.dart';
+import 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
 
 part 'translation_model.freezed.dart';
 part 'translation_model.g.dart';

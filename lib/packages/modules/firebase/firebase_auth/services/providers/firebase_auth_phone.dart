@@ -22,7 +22,7 @@ class FirebaseAuthPhone extends IPhoneAuthProvider with FirebaseAuthProvider {
 
     return SendCodeResult(
       phoneNumber: phoneNumber,
-      codeVerification: ((code, linkToUser) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code)))!),
+      codeVerification: ((code, linkToUser) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code)))),
       resendCode: () => _sendSignInWithPhoneCodeWeb(phoneNumber),
     );
   }

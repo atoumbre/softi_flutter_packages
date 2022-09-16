@@ -56,7 +56,7 @@ class FirebaseAuthService extends IAuthService {
   Future<AuthUser?> get getCurrentUser => Future.value(FirebaseAuthProvider.authUserFromUser(firebaseAuth.currentUser));
 
   @override
-  Stream<AuthUser?> get authUserStream => firebaseAuth.authStateChanges().map(FirebaseAuthProvider.authUserFromUser);
+  Stream<AuthUser?> get authUserStream => firebaseAuth.authStateChanges().asyncMap(FirebaseAuthProvider.authUserFromUser);
 
   @override
   Future<void> init() async {
