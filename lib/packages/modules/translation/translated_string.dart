@@ -30,16 +30,16 @@ class TString {
   call({int count = 1, List<String> args = const [], Map<String, String> params = const {}}) {
     var trans = tr;
 
-    if (params.isNotEmpty) {
-      params.forEach((key, value) {
-        trans = trans.replaceAll('@$key', value);
-      });
-    }
-
     if (args.isNotEmpty) {
       for (final arg in args) {
         trans = trans.replaceFirst(RegExp(r'%s'), arg.toString());
       }
+    }
+
+    if (params.isNotEmpty) {
+      params.forEach((key, value) {
+        trans = trans.replaceAll('@$key', value);
+      });
     }
 
     var transList = trans.split('|');
