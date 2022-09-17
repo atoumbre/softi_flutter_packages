@@ -4,9 +4,9 @@ abstract class TranslationParser {
   Map<String, dynamic> import(Map<String, dynamic> translationsMap, List<String> langList) {
     var initialMap_ = toJson();
 
-    Map<String, String> inputs = translationsMap['input'] ?? <String, String>{};
-    Map<String, Map<String, String>> outputs = Map<String, Map<String, String>>.from(translationsMap['output'] ?? {});
-    Map<String, Map<String, String>> manuals = Map<String, Map<String, String>>.from(translationsMap['manual'] ?? {});
+    Map<String, String> inputs = Map<String, String>.from(translationsMap['input'] ?? {});
+    Map<String, dynamic> outputs = Map<String, dynamic>.from(translationsMap['output'] ?? {});
+    Map<String, dynamic> manuals = Map<String, dynamic>.from(translationsMap['manual'] ?? {});
 
     for (var inputEntry in inputs.entries) {
       if (initialMap_[inputEntry.key] != null) {
