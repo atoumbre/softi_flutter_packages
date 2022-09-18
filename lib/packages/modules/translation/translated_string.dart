@@ -29,6 +29,7 @@ class TString {
 
   call({int count = 1, List<String> args = const [], Map<String, String> params = const {}}) {
     var trans = tr;
+    var _params = {...params, 'count': count.toString()};
 
     if (args.isNotEmpty) {
       for (final arg in args) {
@@ -36,8 +37,8 @@ class TString {
       }
     }
 
-    if (params.isNotEmpty) {
-      params.forEach((key, value) {
+    if (_params.isNotEmpty) {
+      _params.forEach((key, value) {
         trans = trans.replaceAll('@$key', value);
       });
     }
