@@ -72,8 +72,8 @@ abstract class TranslationParser {
       // }
 
       for (var manualEntry in manual.entries) {
-        manuals[manualEntry.key] ??= <String, String>{};
-        manuals[manualEntry.key]![element.key] = manualEntry.value;
+        manuals[element.key] ??= <String, String>{};
+        manuals[element.key]![manualEntry.key] = manualEntry.value;
       }
     }
 
