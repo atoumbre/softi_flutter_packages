@@ -27,25 +27,28 @@ class TString {
     return manual[langAndcountry] ?? manual[lang] ?? output[langAndcountry] ?? output[lang] ?? input;
   }
 
-  call({int count = 1, List<String> args = const [], Map<String, String> params = const {}}) {
-    var trans = tr;
-    var _params = {...params, 'count': count.toString()};
+  trans({count = 1, List<String> args = const [], Map<String, String> params = const {}}) {
+    var transList = tr.split('|');
+    var trans = count == 1 ? transList[0] : (transList.length == 1 ? transList[0] : transList[1]);
 
+    // PLURAL
+    trans = trans.replaceFirst(RegExp(r'%p'), count.toString());
+
+    // ARGUMENTS
     if (args.isNotEmpty) {
       for (final arg in args) {
         trans = trans.replaceFirst(RegExp(r'%s'), arg.toString());
       }
     }
 
-    if (_params.isNotEmpty) {
-      _params.forEach((key, value) {
+    // PARAMS
+    if (params.isNotEmpty) {
+      params.forEach((key, value) {
         trans = trans.replaceAll('@$key', value);
       });
     }
 
-    var transList = trans.split('|');
-
-    return count == 1 ? transList[0] : (transList.length == 1 ? transList[0] : transList[1]);
+    return trans;
   }
 
   /// ENCODE - DECODE
