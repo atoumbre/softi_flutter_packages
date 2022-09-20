@@ -21,7 +21,7 @@ class FirebaseGoogleSignin extends IGoogleAuthProvider with FirebaseAuthProvider
   );
 
   Future<AuthCredential> getCredentialForGoogle() async {
-    final googleSignIn = GoogleSignIn();
+    final googleSignIn = GoogleSignIn(scopes: ['email']);
     final googleUser = await googleSignIn.signIn();
 
     if (googleUser != null) {

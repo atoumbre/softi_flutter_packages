@@ -27,7 +27,7 @@ class TString {
     return manual[langAndcountry] ?? manual[lang] ?? output[langAndcountry] ?? output[lang] ?? input;
   }
 
-  trans({count = 1, List<String> args = const [], Map<String, String> params = const {}}) {
+  String trans({count = 1, List<String> args = const [], Map<String, String> params = const {}}) {
     var transList = tr.split('|');
     var trans = count == 1 ? transList[0] : (transList.length == 1 ? transList[0] : transList[1]);
 
