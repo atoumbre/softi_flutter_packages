@@ -8,10 +8,10 @@ import 'package:softi_packages/packages/modules/firebase/firebase_auth/services/
 class FirebaseAuthFacebookSignIn extends IFacebookAuthProvider with FirebaseAuthProvider {
   String get providerId => 'facebook.com';
 
-  final String? facebookClientId;
+  // final String? facebookClientId;
   final FirebaseAuth firebaseAuth;
 
-  FirebaseAuthFacebookSignIn(this.firebaseAuth, {this.facebookClientId});
+  FirebaseAuthFacebookSignIn(this.firebaseAuth);
 
   Future<AuthCredential> getFacebookAuthCredential() async {
     final LoginResult result = await FacebookAuth.instance.login();

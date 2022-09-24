@@ -30,23 +30,10 @@ class FirebaseAuthService extends IAuthService {
           appleSignInCallbackUrl: settings.appleSignInCallbackUrl,
           appleSignInClientId: settings.appleSignInClientId,
         ),
-        facebookSignin = FirebaseAuthFacebookSignIn(
-          firebaseAuth,
-          facebookClientId: settings.facebookClientId,
-        ),
+        facebookSignin = FirebaseAuthFacebookSignIn(firebaseAuth),
         emailLinkSignin = FirebaseAuthEmailLink(
           firebaseAuth,
-          actionCodeSettings: ActionCodeSettings(
-            url: settings.url!,
-            //
-            androidMinimumVersion: settings.androidMinimumVersion,
-            androidInstallApp: settings.androidInstallIfNotAvailable,
-            androidPackageName: settings.androidPackageName,
-            //
-            iOSBundleId: settings.iOSBundleID,
-            handleCodeInApp: true,
-            // dynamicLinkDomain: null,
-          ),
+          actionCodeSettings: settings.actionCodeSettings,
         ),
         googleSignin = FirebaseGoogleSignin(firebaseAuth),
         emailSignin = FirebaseAuthEmalPassword(firebaseAuth),
