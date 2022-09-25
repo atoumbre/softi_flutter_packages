@@ -193,7 +193,7 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
     }
   }
 
-  Future<U?> save(U record, {bool refresh = false, local = false}) async {
+  Future<U?> save(U record, {bool refresh = false, bool local = false}) async {
     var _record = local ? record.record : await _adapter.save(record.record);
 
     if (_record == null) return null;
