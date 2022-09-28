@@ -8,18 +8,22 @@ class ResourceRecord<T extends IResourceData> {
   final IResourceAdapter<T> adapter;
   ResourceRecord(this.adapter); // : data = adapter.resource.deserializer({}).obs;
 
-  final Rxn<T?> data = Rxn<T?>();
+  final Rxn<T> data = Rxn<T>();
   final RxInt fetchCount = 0.obs;
   late StreamSubscription<T?> _sub;
   late String _id;
 
-  String get id => _id;
+  bool _initialized = false;
+
+  String get id => data()?.getId() ?? '';
 
   void init(
     String recordId, {
-    bool reactive = false,
+    bool reactive = true,
     T? autoCreate,
   }) {
+    reset(true);
+
     _id = recordId;
 
     _sub = adapter.get(recordId, reactive: reactive).listen((event) async {
@@ -31,20 +35,35 @@ class ResourceRecord<T extends IResourceData> {
       data(_newValue);
       fetchCount.value++;
     });
+
+    _initialized = true;
   }
 
   Future<T?> save() async {
-    if (data() == null) return null;
-    return adapter.save(data()!);
+    if (data.value == null) return null;
+    return adapter.save(data.value!);
   }
 
   Future<void> update(Map<String, dynamic> values) async {
     return adapter.update(_id, values);
   }
 
+  void reset([silent = false]) {
+    if (_initialized) _sub.cancel();
+    _initialized = false;
+    _id = '';
+    data.value = null;
+    fetchCount.value = 0;
+    if (!silent) {
+      data.refresh();
+      fetchCount.refresh();
+    }
+  }
+
   void dispose() {
-    _sub.cancel();
-    fetchCount(0);
+    reset();
+    data.close();
+    fetchCount.close;
   }
 
   T? call([T? newData]) {

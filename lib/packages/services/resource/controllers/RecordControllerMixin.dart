@@ -22,7 +22,7 @@ mixin RecordControllerMixin<T extends IResourceData> on IBaseViewController {
   }
 
   void disposeRecord() {
-    resourceRecord.dispose();
+    resourceRecord.reset();
   }
 
   @override

@@ -21,14 +21,15 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
         _transform = transform;
 
   // Pagination variables
-  int _pageCount = 0;
   final List<StreamSubscription> _subscriptions = [];
   final List<int> _eventCounts = [];
   final List<List<U>> _dataPages = [];
-  late int _queryRecordCount;
+  int _pageCount = 0;
+  int _queryRecordCount = 0;
   dynamic _lastCursor;
   QueryPagination? _pagination;
   bool _loading = false;
+  bool _firstRun = true;
 
   //  Cache Query params for next call
   late QueryParameters _params;
@@ -45,7 +46,8 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
     CollectionOptions options = const CollectionOptions(pageSize: 5),
   }) {
     // reset on each call of requestData, use requestMoreData for more data
-    _reset();
+    if (!_firstRun) _reset();
+    _firstRun = false;
 
     // Save params for next call
     _params = params;
@@ -181,6 +183,8 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
     changes.close();
     hasMoreData.close();
   }
+
+  void reset() => _reset();
 
   /// Collection related Service call;
 
