@@ -8,7 +8,7 @@ class ResourceRecord<T extends IResourceData> {
   final IResourceAdapter<T> adapter;
   ResourceRecord(this.adapter); // : data = adapter.resource.deserializer({}).obs;
 
-  final Rx<T?> data = Rxn<T?>();
+  final Rxn<T?> data = Rxn<T?>();
   final RxInt fetchCount = 0.obs;
   late StreamSubscription<T?> _sub;
   late String _id;
@@ -18,11 +18,17 @@ class ResourceRecord<T extends IResourceData> {
   void init(
     String recordId, {
     bool reactive = false,
+    T? autoCreate,
   }) {
     _id = recordId;
 
-    _sub = adapter.get(recordId, reactive: reactive).listen((event) {
-      data(event);
+    _sub = adapter.get(recordId, reactive: reactive).listen((event) async {
+      T? _newValue = event;
+      if (event == null && autoCreate != null) {
+        _newValue = await adapter.save(autoCreate);
+      }
+
+      data(_newValue);
       fetchCount.value++;
     });
   }
@@ -33,11 +39,12 @@ class ResourceRecord<T extends IResourceData> {
   }
 
   Future<void> update(Map<String, dynamic> values) async {
-    return adapter.update(id, values);
+    return adapter.update(_id, values);
   }
 
   void dispose() {
     _sub.cancel();
+    fetchCount(0);
   }
 
   T? call([T? newData]) {
