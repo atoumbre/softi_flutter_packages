@@ -22,7 +22,7 @@ abstract class IAuthService extends IBaseService {
 
   Future<void> deleteAccount();
 
-  void refresh();
+  Future<void> refresh();
 }
 
 class SendCodeResult {

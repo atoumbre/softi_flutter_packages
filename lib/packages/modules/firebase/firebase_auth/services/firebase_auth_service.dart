@@ -58,9 +58,9 @@ class FirebaseAuthService extends IAuthService {
   }
 
   @override
-  void refresh() {
-    // ignore: todo
-    // TODO: implement refresh
+  Future<void> refresh() async {
+    firebaseAuth.currentUser?.reload();
+    await firebaseAuth.currentUser?.getIdToken(true);
   }
 
   @override

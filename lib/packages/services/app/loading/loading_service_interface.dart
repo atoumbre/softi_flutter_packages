@@ -5,9 +5,9 @@ import 'package:softi_packages/packages/core/services/BaseService.dart';
 abstract class ILoadingService extends IBaseService {
   Future<void> dismiss();
 
-  Future<void> showProgress({String? status, required double progress});
+  Future<void> showStatus({String? status});
 
-  Future<void> showStatus({String? status, bool? dismissOnTap});
+  Future<void> showProgress({String? status, required double progress});
 
   Future<void> showInfo(String status, {Duration? duration, bool? dismissOnTap});
 

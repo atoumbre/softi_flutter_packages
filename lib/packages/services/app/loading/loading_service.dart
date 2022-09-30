@@ -5,9 +5,9 @@ import 'package:softi_packages/packages/services/app/loading/loading_service_int
 
 class LoadingService extends ILoadingService {
   @override
-  Future<void> showStatus({String? status, bool? dismissOnTap = false}) {
+  Future<void> showStatus({String? status}) {
     return failureCatcher(() {
-      return EasyLoading.show(status: status, dismissOnTap: dismissOnTap);
+      return EasyLoading.show(status: status, dismissOnTap: false);
     });
   }
 
@@ -51,20 +51,19 @@ class LoadingService extends ILoadingService {
 
   @override
   Future<void> init() async {
-    EasyLoading
-            .instance
-            // ..displayDuration = const Duration(milliseconds: 2000)
-            // ..indicatorType = EasyLoadingIndicatorType.fadingCircle
-            // ..loadingStyle = EasyLoadingStyle.dark
-            // ..indicatorSize = 45.0
-            // ..radius = 10.0
-            // ..progressColor = Colors.yellow
-            // ..backgroundColor = Colors.green
-            // ..indicatorColor = Colors.yellow
-            // ..textColor = Colors.yellow
-            // ..maskColor = Colors.blue.withOpacity(0.5)
-            // ..userInteractions = false
-            .dismissOnTap = true
+    EasyLoading.instance
+          // ..displayDuration = const Duration(milliseconds: 2000)
+          // ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+          // ..loadingStyle = EasyLoadingStyle.dark
+          // ..indicatorSize = 45.0
+          // ..radius = 10.0
+          // ..progressColor = Colors.yellow
+          // ..backgroundColor = Colors.green
+          // ..indicatorColor = Colors.yellow
+          // ..textColor = Colors.yellow
+          // ..maskColor = Colors.blue.withOpacity(0.5)
+          ..userInteractions = false
+          ..dismissOnTap = false
         // ..customAnimation = CustomAnimation();
         ;
   }
