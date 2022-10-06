@@ -227,6 +227,15 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
       if (refresh) data.refresh();
     }
   }
+
+  void handleListItemCreation(int index) {
+    // when item is created we request more data when we reached the end of current page
+    // print('${collection.data.value.length} - ${collection.hasMoreData()} - $index');
+
+    if (data.value.length == (index + 1) && hasMoreData()) {
+      requestMoreData();
+    }
+  }
 }
 
 class CollectionOptions {
