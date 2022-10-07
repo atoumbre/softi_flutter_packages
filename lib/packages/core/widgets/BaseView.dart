@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:softi_packages/packages/core/controllers/BaseViewController.dart';
 
-abstract class IBaseView<T extends IBaseViewController> extends StatelessWidget {
-  const IBaseView({
+abstract class IBaseView2<T extends IBaseViewController> extends StatelessWidget {
+  const IBaseView2({
     Key? key,
   }) : super(key: key);
 

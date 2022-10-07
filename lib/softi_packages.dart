@@ -31,6 +31,7 @@ export 'package:softi_packages/packages/core/controllers/StoppableServiceControl
 export 'package:softi_packages/packages/core/services/BaseService.dart';
 export 'package:softi_packages/packages/core/services/SoppableService.dart';
 export 'package:softi_packages/packages/core/widgets/BaseView.dart';
+export 'package:softi_packages/packages/core/widgets/BaseView_copy.dart';
 
 ///
 export 'package:softi_packages/packages/services/device/connectivity/ConnectivityController.dart';

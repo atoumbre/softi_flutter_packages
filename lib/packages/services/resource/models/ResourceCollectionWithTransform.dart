@@ -40,10 +40,11 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
   final data = Rx<List<U>>(<U>[]);
   final changes = Rx<List<DataChange<T>>>(<DataChange<T>>[]);
   final loading = false.obs;
+  bool get isEmpty => !hasMoreData() && data().isEmpty;
 
   void requestData(
     QueryParameters params, {
-    CollectionOptions options = const CollectionOptions(pageSize: 5),
+    CollectionOptions options = const CollectionOptions(),
   }) {
     // reset on each call of requestData, use requestMoreData for more data
     if (!_firstRun) _reset();

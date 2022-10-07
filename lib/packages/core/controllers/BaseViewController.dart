@@ -5,11 +5,27 @@ import 'package:softi_packages/packages/core/services/BaseService.dart';
 
 enum ControllerStatus { idle, busy, error }
 
+enum TaskStatus { idle, progress, done, error }
+
+class TaskState {
+  TaskStatus status = TaskStatus.idle;
+  List<double> progressIndicators = [];
+}
+
 abstract class IBaseViewController extends IBaseController {
   final controllerStatus = ControllerStatus.idle.obs;
-  // final lastResult = Rx<Result<ServiceFailure, dynamic>>(Success(null));
+  final tasksStatus = <String, TaskState>{}.obs;
 
+  // final lastResult = Rx<Result<ServiceFailure, dynamic>>(Success(null));
   // ControllerStatus get controllerStatus => _controllerStatus();
+
+  void setTaskState(String tag, TaskState state) {
+    tasksStatus[tag] = state;
+  }
+
+  void _resetTaskState() {
+    tasksStatus({});
+  }
 
   Future<Result<ServiceFailure, List<R>>> serviceMultiTaskHandler<R>(
     Iterable<Future<R> Function()> tasks, {
@@ -25,6 +41,7 @@ abstract class IBaseViewController extends IBaseController {
     }
 
     changeStatusToBusy();
+    _resetTaskState();
 
     try {
       var result = await Future.wait(tasks.map((task) => task()));
@@ -60,6 +77,7 @@ abstract class IBaseViewController extends IBaseController {
     }
 
     changeStatusToBusy();
+    _resetTaskState();
 
     try {
       var result = await task();
