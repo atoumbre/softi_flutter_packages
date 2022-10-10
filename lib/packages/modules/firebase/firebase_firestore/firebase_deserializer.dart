@@ -2,33 +2,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:softi_packages/packages/modules/firebase/firebase_firestore/firebase_resource.dart';
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
 
-T? fromFirestore<T extends IResourceData>(FirestoreResource<T> res, DocumentSnapshot docSnap) {
+T? fromFirestore<T extends IBaseResourceData>(FirestoreResource<T> res, DocumentSnapshot docSnap) {
   var map = docSnap.data();
   if (map == null) return null;
 
   var _map = firestoreMap(map as Map<String, dynamic>, true);
 
   var _result = res.deserializer({
-    // 'id': docSnap.id,
-    // 'path': docSnap.reference.path,
     ..._map,
   });
 
   _result
-    ..setId(docSnap.id)
-    ..setPath(docSnap.reference.path);
+    ..id(docSnap.id)
+    ..path(docSnap.reference.path)
+    ..createdAt(_map['createdAt'])
+    ..updatedAt(_map['updatedAt']);
 
   return _result;
 }
 
-Map<String, dynamic> toFirestore(IResourceData doc) {
+Map<String, dynamic> toFirestore(IBaseResourceData doc) {
   var map = doc.toJson();
 
   var _map = firestoreMap(map, false);
 
-  return _map
-    ..remove('id') //
-    ..remove('path');
+  _map['createdAt'] = (doc.id() == '') ? FieldValue.serverTimestamp() : doc.createdAt() ?? FieldValue.serverTimestamp();
+  _map['updatedAt'] = FieldValue.serverTimestamp();
+
+  return _map;
+  // ..remove('id') //
+  // ..remove('path') //
+  // ..remove('createdAt') //
+  // ..remove('updatedAt');
 }
 
 Map<String, dynamic> firestoreMap(Map<String, dynamic> input, bool fromFirestore, [bool skipNull = true]) {

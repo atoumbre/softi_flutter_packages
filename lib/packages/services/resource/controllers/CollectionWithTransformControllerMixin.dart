@@ -6,7 +6,7 @@ import 'package:softi_packages/packages/services/resource/models/ResourceCollect
 import 'package:softi_packages/packages/services/resource/models/filters.dart';
 import 'package:softi_packages/packages/services/resource/models/query.dart';
 
-mixin CollectionWithTransformControllerMixin<T extends IResourceData, U extends Ext<T>> on IBaseViewController {
+mixin CollectionWithTransformControllerMixin<T extends IBaseResourceData, U extends Ext<T>> on IBaseViewController {
   // @override
   // Future<void> onReady() async {
   //   super.onReady();

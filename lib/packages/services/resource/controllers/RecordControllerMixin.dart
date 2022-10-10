@@ -3,7 +3,7 @@ import 'package:softi_packages/packages/core/controllers/BaseViewController.dart
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
 import 'package:softi_packages/packages/services/resource/models/ResourceRecord.dart';
 
-mixin RecordControllerMixin<T extends IResourceData> on IBaseViewController {
+mixin RecordControllerMixin<T extends IBaseResourceData> on IBaseViewController {
   // @override
   // Future<void> loadView() async => initRecord();
 

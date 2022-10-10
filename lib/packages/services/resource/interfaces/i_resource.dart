@@ -1,32 +1,53 @@
 typedef Deserializer<T> = T Function(Map<String, dynamic>);
 
-enum ResourceRequestType { call, find, read, create, replace, update, delete }
+// enum ResourceRequestType { call, find, read, create, replace, update, delete }
 
-abstract class IResource<T extends IResourceData> {
+abstract class IResource<T extends IBaseResourceData> {
   String endpointResolver();
   T deserializer(Map<String, dynamic> serializedData);
 }
 
-abstract class IResourceData {
-  String? id;
-  String? path;
+abstract class IBaseResourceData {
+  String _id = '';
+  String _path = '';
+  DateTime? _createdAt;
+  DateTime? _updatedAt;
+
   Map<String, dynamic> toJson();
-  String getId();
-  String getPath();
-  void setId(String newId);
-  void setPath(String newPath);
+
+  DateTime? createdAt([DateTime? dateTime]);
+  DateTime? updatedAt([DateTime? dateTime]);
+  String id([String? newId]);
+  String path([String? newPath]);
+
   bool isValid();
 }
 
-mixin BaseResourceDataMixin on IResourceData {
+mixin BaseResourceDataMixin on IBaseResourceData {
   @override
-  String getId() => id ?? '';
+  String id([String? newId]) {
+    if (newId != null) _id = newId;
+    return _id;
+  }
+
   @override
-  String getPath() => path ?? '';
+  String path([String? newPath]) {
+    if (newPath != null) _path = newPath;
+    return _path;
+  }
+
   @override
-  void setId(String newId) => id = newId;
+  DateTime? createdAt([DateTime? dateTime]) {
+    if (dateTime != null) _createdAt = dateTime;
+    return _createdAt;
+  }
+
   @override
-  void setPath(String newPath) => path = newPath;
+  DateTime? updatedAt([DateTime? dateTime]) {
+    if (dateTime != null) _updatedAt = dateTime;
+    return _updatedAt;
+  }
+
   @override
-  bool isValid() => (id ?? '') != '';
+  bool isValid() => _id != '';
 }

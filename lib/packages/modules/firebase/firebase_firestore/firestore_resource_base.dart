@@ -5,7 +5,7 @@ import 'package:softi_packages/packages/services/resource/interfaces/i_resource_
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource_base.dart';
 
 class FirestoreResourceBase extends IResourceBase {
-  final IResource<T> Function<T extends IResourceData>() _resourceResolver;
+  final IResource<T> Function<T extends IBaseResourceData>() _resourceResolver;
   final FirebaseFirestore _firebaseFirestore;
   FirestoreResourceBase(
     this._resourceResolver,
@@ -13,10 +13,10 @@ class FirestoreResourceBase extends IResourceBase {
   );
 
   @override
-  IResourceAdapter<T> adapter<T extends IResourceData>(IResource<IResourceData> res) {
+  IResourceAdapter<T> adapter<T extends IBaseResourceData>(IResource<IBaseResourceData> res) {
     return FirestoreResourceAdapter<T>(_firebaseFirestore)..setResource(res as IResource<T>);
   }
 
   @override
-  IResource<T> resourceResolver<T extends IResourceData>() => _resourceResolver<T>();
+  IResource<T> resourceResolver<T extends IBaseResourceData>() => _resourceResolver<T>();
 }

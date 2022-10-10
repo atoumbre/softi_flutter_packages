@@ -7,7 +7,7 @@ import 'package:softi_packages/packages/services/resource/interfaces/i_resource.
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource_adapter.dart';
 import 'package:softi_packages/packages/services/resource/models/query.dart';
 
-class FirestoreResourceAdapter<T extends IResourceData> extends IResourceAdapter<T> {
+class FirestoreResourceAdapter<T extends IBaseResourceData> extends IResourceAdapter<T> {
   final FirebaseFirestore _firestoreInstance;
   FirestoreResourceAdapter(this._firestoreInstance);
 
@@ -89,27 +89,27 @@ class FirestoreResourceAdapter<T extends IResourceData> extends IResourceAdapter
         .doc(id);
 
     var _map = firestoreMap(values, false);
-    _map['updatedAt'] = FieldValue.serverTimestamp();
+    // _map['updatedAt'] = FieldValue.serverTimestamp();
 
     await docRef.set(_map, SetOptions(merge: true));
   }
 
   @override
   Future<T?> save(T doc) async {
-    var id = doc.getId();
+    var id = doc.id();
     DocumentReference docRef;
 
     var _map = toFirestore(doc);
-    _map['updatedAt'] = FieldValue.serverTimestamp();
+    // _map['updatedAt'] = FieldValue.serverTimestamp();
     //! Timestamp
     if (id == '') {
       //+ Creation
-      _map['createdAt'] = FieldValue.serverTimestamp();
+      // _map['createdAt'] = FieldValue.serverTimestamp();
       docRef = await _getRef(resource as FirestoreResource<T>).add(_map);
     } else {
       //+ Update
       docRef = _getRef(resource as FirestoreResource<T>).doc(id);
-      await docRef.set(_map, SetOptions(merge: false));
+      await docRef.set(_map, SetOptions(merge: true));
     }
 
     var _doc = await docRef.snapshots().first;

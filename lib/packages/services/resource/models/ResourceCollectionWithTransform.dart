@@ -7,13 +7,13 @@ import 'package:softi_packages/packages/services/resource/interfaces/i_resource.
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource_adapter.dart';
 import 'package:softi_packages/packages/services/resource/models/query.dart';
 
-class Ext<T extends IResourceData> {
+class Ext<T extends IBaseResourceData> {
   T record;
   bool isNew;
   Ext(this.record, {this.isNew = false});
 }
 
-class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>> {
+class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext<T>> {
   final IResourceAdapter<T> _adapter;
   final U Function(T) _transform;
   ResourceCollectionWithTransform(IResourceAdapter<T> adapter, U Function(T) transform)
@@ -28,6 +28,8 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
   int _queryRecordCount = 0;
   dynamic _lastCursor;
   QueryPagination? _pagination;
+
+  // State tracking variables
   bool _loading = false;
   bool _firstRun = true;
 
@@ -40,6 +42,7 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
   final data = Rx<List<U>>(<U>[]);
   final changes = Rx<List<DataChange<T>>>(<DataChange<T>>[]);
   final loading = false.obs;
+  final initialized = false.obs;
   bool get isEmpty => !hasMoreData() && data().isEmpty;
 
   void requestData(
@@ -100,8 +103,8 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
       (r) {
         _handler(r, _pageIndex);
         _loading = false;
-
         SchedulerBinding.instance.addPostFrameCallback((_) {
+          initialized(true);
           loading(false);
         });
       },
@@ -109,6 +112,7 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
         _loading = false;
         SchedulerBinding.instance.addPostFrameCallback((_) {
           loading(false);
+          loading(true);
         });
       },
       cancelOnError: false,
@@ -190,7 +194,7 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
   /// Collection related Service call;
 
   void _addRecord(U record, [overwrite = false]) {
-    var index = data.value.indexWhere((element) => element.record.getId() == record.record.getId());
+    var index = data.value.indexWhere((element) => element.record.id() == record.record.id());
     if (index == -1) {
       data.value.insert(0, record);
     } else {
@@ -215,11 +219,11 @@ class ResourceCollectionWithTransform<T extends IResourceData, U extends Ext<T>>
   Future<void> delete({String? id, int? index, bool refresh = false, local = false}) async {
     if (id == null && index == null) return;
 
-    var _index = index ?? data.value.indexWhere((element) => element.record.getId() == id);
+    var _index = index ?? data.value.indexWhere((element) => element.record.id() == id);
 
     if (_index == -1) return;
 
-    var _id = id ?? data.value[_index].record.getId();
+    var _id = id ?? data.value[_index].record.id();
 
     if (!local) await _adapter.delete(_id);
 

@@ -6,7 +6,7 @@ import 'package:softi_packages/packages/services/resource/models/ResourceCollect
 import 'package:softi_packages/packages/services/resource/models/filters.dart';
 import 'package:softi_packages/packages/services/resource/models/query.dart';
 
-class CollectionController<T extends IResourceData> extends IBaseViewController with CollectionWithTransformControllerMixin<T, Ext<T>> {
+class CollectionController<T extends IBaseResourceData> extends IBaseViewController with CollectionWithTransformControllerMixin<T, Ext<T>> {
   @override
   void onInit() {
     super.onInit();

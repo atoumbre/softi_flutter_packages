@@ -4,11 +4,11 @@ import 'package:softi_packages/packages/core/controllers/BaseViewController.dart
 
 abstract class IBaseView<T extends IBaseViewController> extends StatelessWidget {
   IBaseView(T? controller, {super.key, String? tag})
-      : controller = controller == null //
+      : _controller = controller == null //
             ? Get.find<T>()
             : Get.put(controller, tag: tag);
 
-  final T controller;
+  final T _controller;
 
   Widget builder(T controller);
 
@@ -21,8 +21,8 @@ abstract class IBaseView<T extends IBaseViewController> extends StatelessWidget 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      print(controller.controllerStatus);
-      return builder(controller);
+      print(_controller.controllerStatus);
+      return builder(_controller);
     });
   }
 }

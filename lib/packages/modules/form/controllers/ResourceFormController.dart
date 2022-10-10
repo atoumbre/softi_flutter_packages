@@ -3,7 +3,7 @@ import 'package:softi_packages/packages/modules/form/controllers/FormControllerM
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource_base.dart';
 
-abstract class ResourceFormController<T extends IResourceData> extends IBaseViewController with FormControllerMixin<T> {
+abstract class ResourceFormController<T extends IBaseResourceData> extends IBaseViewController with FormControllerMixin<T> {
   final IResourceBase db;
   final T record;
   final bool refreshRecord;
@@ -18,7 +18,7 @@ abstract class ResourceFormController<T extends IResourceData> extends IBaseView
 
     Future(() async {
       if (refreshRecord && record.isValid()) {
-        _editingRecord = (await db.api<T>().get(record.getId(), reactive: false).first);
+        _editingRecord = (await db.api<T>().get(record.id(), reactive: false).first);
       } else {
         _editingRecord = record;
       }
@@ -36,7 +36,7 @@ abstract class ResourceFormController<T extends IResourceData> extends IBaseView
   @override
   Future<T> beforSave(Map<String, dynamic> formData) async {
     var record = db.resource<T>().deserializer(transformer(formData));
-    return await beforeResourceSave(record);
+    return await beforeResourceSave(record..id(this.record.id()));
   }
 
   @override

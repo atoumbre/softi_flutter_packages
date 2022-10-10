@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource_adapter.dart';
 
-class ResourceRecord<T extends IResourceData> {
+class ResourceRecord<T extends IBaseResourceData> {
   final IResourceAdapter<T> adapter;
   ResourceRecord(this.adapter); // : data = adapter.resource.deserializer({}).obs;
 
@@ -15,7 +15,7 @@ class ResourceRecord<T extends IResourceData> {
 
   bool _initialized = false;
 
-  String get id => data()?.getId() ?? '';
+  String get id => data()?.id() ?? '';
 
   void init(
     String recordId, {

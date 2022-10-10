@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
 import 'package:softi_packages/packages/services/resource/models/query.dart';
 
-abstract class IResourceAdapter<T extends IResourceData> {
+abstract class IResourceAdapter<T extends IBaseResourceData> {
   late IResource<T> _res;
 
   IResource<T> get resource => _res;
@@ -27,7 +27,7 @@ abstract class IResourceAdapter<T extends IResourceData> {
   Future<void> delete(String id);
 }
 
-class QueryResult<T extends IResourceData> {
+class QueryResult<T extends IBaseResourceData> {
   final List<T> data;
   final List<DataChange<T>> changes;
   final dynamic cursor;
@@ -37,7 +37,7 @@ class QueryResult<T extends IResourceData> {
   QueryResult(this.data, this.changes, {this.cursor});
 }
 
-class DataChange<T extends IResourceData?> {
+class DataChange<T extends IBaseResourceData?> {
   T? data;
   int? oldIndex;
   int? newIndex;

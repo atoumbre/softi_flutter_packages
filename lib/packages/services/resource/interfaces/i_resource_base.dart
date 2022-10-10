@@ -6,29 +6,29 @@ import 'package:softi_packages/packages/services/resource/models/ResourceRecord.
 
 abstract class IResourceBase {
   //! To override
-  IResourceAdapter<T> adapter<T extends IResourceData>(IResource<T> res);
-  IResource<T> resourceResolver<T extends IResourceData>();
+  IResourceAdapter<T> adapter<T extends IBaseResourceData>(IResource<T> res);
+  IResource<T> resourceResolver<T extends IBaseResourceData>();
 
   //
-  ResourceCollection<T> collection<T extends IResourceData>() {
+  ResourceCollection<T> collection<T extends IBaseResourceData>() {
     // return ResourceCollection<T>((_res ?? _resourceResolver<T>()).adapter);
     return ResourceCollection<T>(adapter<T>(resourceResolver<T>()));
   }
 
   //
-  ResourceCollectionWithTransform<T, U> collectionTrans<T extends IResourceData, U extends Ext<T>>(U Function(T?) transform) {
+  ResourceCollectionWithTransform<T, U> collectionTrans<T extends IBaseResourceData, U extends Ext<T>>(U Function(T?) transform) {
     // return ResourceCollection<T>((_res ?? _resourceResolver<T>()).adapter);
     return ResourceCollectionWithTransform<T, U>(adapter<T>(resourceResolver<T>()), transform);
   }
 
-  ResourceRecord<T> record<T extends IResourceData>() {
+  ResourceRecord<T> record<T extends IBaseResourceData>() {
     // return ResourceRecord<T>(_res ?? _resourceResolver<T>().adapter);
     return ResourceRecord<T>(adapter<T>(resourceResolver<T>()));
   }
 
-  IResource<T> resource<T extends IResourceData>() => resourceResolver<T>();
+  IResource<T> resource<T extends IBaseResourceData>() => resourceResolver<T>();
 
-  IResourceAdapter<T> api<T extends IResourceData>() {
+  IResourceAdapter<T> api<T extends IBaseResourceData>() {
     var _res = resourceResolver<T>();
     return adapter<T>(_res);
   }

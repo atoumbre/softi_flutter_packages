@@ -6,7 +6,7 @@ part 'translation_model.freezed.dart';
 part 'translation_model.g.dart';
 
 @freezed
-class TTranslation extends IResourceData with BaseResourceDataMixin, _$TTranslation {
+class TTranslation extends IBaseResourceData with BaseResourceDataMixin, _$TTranslation {
   TTranslation._();
 
   @CustomDateTimeConverter()
@@ -17,8 +17,8 @@ class TTranslation extends IResourceData with BaseResourceDataMixin, _$TTranslat
     Map<String, Map<String, String>>? manual,
 
     //! Timestamp
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    // DateTime? createdAt,
+    // DateTime? updatedAt,
   }) = _TTranslation;
 
   factory TTranslation.fromJson(Map<String, dynamic> json) => _$TTranslationFromJson(json);

@@ -24,9 +24,7 @@ mixin _$TTranslation {
   Map<String, Map<String, String>>? get output =>
       throw _privateConstructorUsedError;
   Map<String, Map<String, String>>? get manual =>
-      throw _privateConstructorUsedError; //! Timestamp
-  DateTime? get createdAt => throw _privateConstructorUsedError;
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,9 +40,7 @@ abstract class $TTranslationCopyWith<$Res> {
   $Res call(
       {Map<String, String>? input,
       Map<String, Map<String, String>>? output,
-      Map<String, Map<String, String>>? manual,
-      DateTime? createdAt,
-      DateTime? updatedAt});
+      Map<String, Map<String, String>>? manual});
 }
 
 /// @nodoc
@@ -60,8 +56,6 @@ class _$TTranslationCopyWithImpl<$Res> implements $TTranslationCopyWith<$Res> {
     Object? input = freezed,
     Object? output = freezed,
     Object? manual = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
       input: input == freezed
@@ -76,14 +70,6 @@ class _$TTranslationCopyWithImpl<$Res> implements $TTranslationCopyWith<$Res> {
           ? _value.manual
           : manual // ignore: cast_nullable_to_non_nullable
               as Map<String, Map<String, String>>?,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: updatedAt == freezed
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
     ));
   }
 }
@@ -98,9 +84,7 @@ abstract class _$$_TTranslationCopyWith<$Res>
   $Res call(
       {Map<String, String>? input,
       Map<String, Map<String, String>>? output,
-      Map<String, Map<String, String>>? manual,
-      DateTime? createdAt,
-      DateTime? updatedAt});
+      Map<String, Map<String, String>>? manual});
 }
 
 /// @nodoc
@@ -119,8 +103,6 @@ class __$$_TTranslationCopyWithImpl<$Res>
     Object? input = freezed,
     Object? output = freezed,
     Object? manual = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
   }) {
     return _then(_$_TTranslation(
       input: input == freezed
@@ -135,14 +117,6 @@ class __$$_TTranslationCopyWithImpl<$Res>
           ? _value._manual
           : manual // ignore: cast_nullable_to_non_nullable
               as Map<String, Map<String, String>>?,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: updatedAt == freezed
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
     ));
   }
 }
@@ -155,9 +129,7 @@ class _$_TTranslation extends _TTranslation {
   _$_TTranslation(
       {final Map<String, String>? input,
       final Map<String, Map<String, String>>? output,
-      final Map<String, Map<String, String>>? manual,
-      this.createdAt,
-      this.updatedAt})
+      final Map<String, Map<String, String>>? manual})
       : _input = input,
         _output = output,
         _manual = manual,
@@ -193,15 +165,9 @@ class _$_TTranslation extends _TTranslation {
     return EqualUnmodifiableMapView(value);
   }
 
-//! Timestamp
-  @override
-  final DateTime? createdAt;
-  @override
-  final DateTime? updatedAt;
-
   @override
   String toString() {
-    return 'TTranslation(input: $input, output: $output, manual: $manual, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'TTranslation(input: $input, output: $output, manual: $manual)';
   }
 
   @override
@@ -211,9 +177,7 @@ class _$_TTranslation extends _TTranslation {
             other is _$_TTranslation &&
             const DeepCollectionEquality().equals(other._input, _input) &&
             const DeepCollectionEquality().equals(other._output, _output) &&
-            const DeepCollectionEquality().equals(other._manual, _manual) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
+            const DeepCollectionEquality().equals(other._manual, _manual));
   }
 
   @JsonKey(ignore: true)
@@ -222,9 +186,7 @@ class _$_TTranslation extends _TTranslation {
       runtimeType,
       const DeepCollectionEquality().hash(_input),
       const DeepCollectionEquality().hash(_output),
-      const DeepCollectionEquality().hash(_manual),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(updatedAt));
+      const DeepCollectionEquality().hash(_manual));
 
   @JsonKey(ignore: true)
   @override
@@ -243,9 +205,7 @@ abstract class _TTranslation extends TTranslation {
   factory _TTranslation(
       {final Map<String, String>? input,
       final Map<String, Map<String, String>>? output,
-      final Map<String, Map<String, String>>? manual,
-      final DateTime? createdAt,
-      final DateTime? updatedAt}) = _$_TTranslation;
+      final Map<String, Map<String, String>>? manual}) = _$_TTranslation;
   _TTranslation._() : super._();
 
   factory _TTranslation.fromJson(Map<String, dynamic> json) =
@@ -257,10 +217,6 @@ abstract class _TTranslation extends TTranslation {
   Map<String, Map<String, String>>? get output;
   @override
   Map<String, Map<String, String>>? get manual;
-  @override //! Timestamp
-  DateTime? get createdAt;
-  @override
-  DateTime? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$_TTranslationCopyWith<_$_TTranslation> get copyWith =>
