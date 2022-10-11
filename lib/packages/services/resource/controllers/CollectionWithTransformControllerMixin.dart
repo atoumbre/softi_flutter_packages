@@ -32,7 +32,7 @@ mixin CollectionWithTransformControllerMixin<T extends IBaseResourceData, U exte
     // when item is created we request more data when we reached the end of current page
     // print('${collection.data.value.length} - ${collection.hasMoreData()} - $index');
 
-    if (collection.data.value.length == (index + 1) && collection.hasMoreData()) {
+    if ((itemCount != 0 ? itemCount : collection.data.value.length) == (index + 1) && collection.hasMoreData()) {
       collection.requestMoreData();
     }
   }
