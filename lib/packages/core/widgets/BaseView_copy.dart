@@ -5,7 +5,7 @@ import 'package:softi_packages/packages/core/controllers/BaseViewController.dart
 abstract class IBaseView<T extends IBaseViewController> extends StatelessWidget {
   IBaseView(T? controller, {super.key, String? tag})
       : _controller = controller == null //
-            ? Get.find<T>()
+            ? Get.find<T>(tag: tag)
             : Get.put(controller, tag: tag);
 
   final T _controller;
