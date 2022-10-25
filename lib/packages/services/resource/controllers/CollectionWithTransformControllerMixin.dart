@@ -28,11 +28,11 @@ mixin CollectionWithTransformControllerMixin<T extends IBaseResourceData, U exte
   RxBool get hasMoreData => collection.hasMoreData;
   RxBool get isResourceLoading => collection.loading;
 
-  void handleListItemCreation(int index, [int itemCount = 0]) {
+  void handleListItemCreation(int index) {
     // when item is created we request more data when we reached the end of current page
     // print('${collection.data.value.length} - ${collection.hasMoreData()} - $index');
-
-    if ((itemCount != 0 ? itemCount : collection.data.value.length) == (index + 1) && collection.hasMoreData()) {
+    print(index);
+    if (collection.data.value.length == (index + 1) && collection.hasMoreData()) {
       collection.requestMoreData();
     }
   }

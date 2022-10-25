@@ -1,8 +1,10 @@
-import 'package:softi_packages/packages/core/controllers/BaseLifeCycleController.dart';
+import 'dart:ui';
+
+import 'package:softi_packages/packages/core/controllers/IBaseControllerWithLifeCycle.dart';
 import 'package:softi_packages/packages/core/services/SoppableService.dart';
 
-class MultipleStoppableServiceController extends IBaseLifeCycleController {
-  final Iterable<IStoppableService> services;
+class MultipleStoppableServiceController<T extends IStoppableService> extends IBaseControllerWithLifeCycle {
+  final Iterable<T> services;
 
   MultipleStoppableServiceController(this.services);
 
@@ -27,14 +29,24 @@ class MultipleStoppableServiceController extends IBaseLifeCycleController {
   }
 
   @override
-  void onDetached() async => await stopServices();
+  void onStateChange(AppLifecycleState newState) async {
+    switch (newState) {
+      case AppLifecycleState.detached:
+        await stopServices();
+        break;
 
-  @override
-  void onInactive() async => await stopServices();
+      case AppLifecycleState.inactive:
+        await stopServices();
+        break;
 
-  @override
-  void onPaused() async => await stopServices();
+      case AppLifecycleState.paused:
+        await stopServices();
+        break;
 
-  @override
-  void onResumed() async => await startServices();
+      case AppLifecycleState.resumed:
+        await startServices();
+        break;
+      default:
+    }
+  }
 }

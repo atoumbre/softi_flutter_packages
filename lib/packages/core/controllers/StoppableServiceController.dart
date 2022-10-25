@@ -1,8 +1,9 @@
-import 'package:softi_packages/packages/core/controllers/BaseLifeCycleController.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:softi_packages/packages/core/controllers/IBaseControllerWithLifeCycle.dart';
 import 'package:softi_packages/packages/core/services/SoppableService.dart';
 
-class StoppableServiceController<T extends IStoppableService> extends IBaseLifeCycleController {
-  final IStoppableService service;
+class StoppableServiceController<T extends IStoppableService> extends IBaseControllerWithLifeCycle {
+  final T service;
 
   StoppableServiceController(this.service);
 
@@ -19,14 +20,24 @@ class StoppableServiceController<T extends IStoppableService> extends IBaseLifeC
   }
 
   @override
-  void onDetached() async => await service.stop();
+  void onStateChange(AppLifecycleState newState) async {
+    switch (newState) {
+      case AppLifecycleState.detached:
+        await service.stop();
+        break;
 
-  @override
-  void onInactive() async => await service.stop();
+      case AppLifecycleState.inactive:
+        await service.stop();
+        break;
 
-  @override
-  void onPaused() async => await service.stop();
+      case AppLifecycleState.paused:
+        await service.stop();
+        break;
 
-  @override
-  void onResumed() async => await service.start();
+      case AppLifecycleState.resumed:
+        await service.start();
+        break;
+      default:
+    }
+  }
 }

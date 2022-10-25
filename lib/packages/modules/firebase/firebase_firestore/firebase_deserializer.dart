@@ -26,7 +26,7 @@ Map<String, dynamic> toFirestore(IBaseResourceData doc) {
 
   var _map = firestoreMap(map, false);
 
-  _map['createdAt'] = (doc.id() == '') ? FieldValue.serverTimestamp() : doc.createdAt() ?? FieldValue.serverTimestamp();
+  _map['createdAt'] = (doc.id() == '') ? FieldValue.serverTimestamp() : (doc.createdAt() ?? FieldValue.serverTimestamp());
   _map['updatedAt'] = FieldValue.serverTimestamp();
 
   return _map;

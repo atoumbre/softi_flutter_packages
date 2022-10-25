@@ -88,10 +88,10 @@ class FirestoreResourceAdapter<T extends IBaseResourceData> extends IResourceAda
     var docRef = _getRef(resource as FirestoreResource<T>) //
         .doc(id);
 
-    var _map = firestoreMap(values, false);
+    var _map = firestoreMap(values, true);
     // _map['updatedAt'] = FieldValue.serverTimestamp();
 
-    await docRef.set(_map, SetOptions(merge: true));
+    await docRef.update(_map);
   }
 
   @override
@@ -109,7 +109,7 @@ class FirestoreResourceAdapter<T extends IBaseResourceData> extends IResourceAda
     } else {
       //+ Update
       docRef = _getRef(resource as FirestoreResource<T>).doc(id);
-      await docRef.set(_map, SetOptions(merge: true));
+      await docRef.update(_map); //, SetOptions(merge: false));
     }
 
     var _doc = await docRef.snapshots().first;

@@ -24,7 +24,7 @@ export 'package:softi_packages/packages/services/auth/models/auth_user.dart';
 
 ///
 export 'package:softi_packages/packages/core/controllers/BaseController.dart';
-export 'package:softi_packages/packages/core/controllers/BaseLifeCycleController.dart';
+export 'package:softi_packages/packages/core/controllers/IBaseControllerWithLifeCycle.dart';
 export 'package:softi_packages/packages/core/controllers/BaseViewController.dart';
 export 'package:softi_packages/packages/core/controllers/MultipleStoppableServiceController.dart';
 export 'package:softi_packages/packages/core/controllers/StoppableServiceController.dart';

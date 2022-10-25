@@ -67,7 +67,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
   }
 
   void _requestData() {
-    if (!hasMoreData()) return;
+    if (!hasMoreData.value) return;
     if (_loading) return;
 
     _loading = true;
@@ -161,7 +161,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
       data.value.length >= _queryRecordCount && _queryRecordCount < _options.maxRecordNumber,
     );
 
-    if (!_options.reactive && !hasMoreData()) {
+    if (!_options.reactive && !hasMoreData.value) {
       _subscriptions.forEach((element) => element.cancel());
     }
   }
@@ -237,7 +237,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     // when item is created we request more data when we reached the end of current page
     // print('${collection.data.value.length} - ${collection.hasMoreData()} - $index');
 
-    if (data.value.length == (index + 1) && hasMoreData()) {
+    if (data.value.length == (index + 1) && hasMoreData.value) {
       requestMoreData();
     }
   }

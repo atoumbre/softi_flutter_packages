@@ -3,7 +3,6 @@ import 'package:softi_packages/packages/services/resource/controllers/Collection
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
 import 'package:softi_packages/packages/services/resource/models/ResourceCollection.dart';
 import 'package:softi_packages/packages/services/resource/models/ResourceCollectionWithTransform.dart';
-import 'package:softi_packages/packages/services/resource/models/filters.dart';
 import 'package:softi_packages/packages/services/resource/models/query.dart';
 
 class CollectionController<T extends IBaseResourceData> extends IBaseViewController with CollectionWithTransformControllerMixin<T, Ext<T>> {
@@ -16,16 +15,9 @@ class CollectionController<T extends IBaseResourceData> extends IBaseViewControl
   @override
   final ResourceCollection<T> collection;
 
-  @override
-  final QueryParameters queryParameters;
+  QueryParameters get queryParameters; // => Filter().build();
 
-  @override
-  final CollectionOptions options;
+  CollectionOptions get options; // => CollectionOptions();
 
-  CollectionController(
-    this.collection, {
-    Filter? filter,
-    CollectionOptions? options,
-  })  : queryParameters = (filter ?? Filter()).build(),
-        options = options ?? const CollectionOptions();
+  CollectionController(this.collection);
 }

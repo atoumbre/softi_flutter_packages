@@ -10,6 +10,7 @@ class _FilterBuilder {
 
   //+ Filters
   _FilterBuilder addFilter(QueryFilter queryFilter) {
+    if (queryFilter.value == null) return this;
     _params.add(queryFilter);
     return this;
   }

@@ -1,10 +1,11 @@
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-import 'package:softi_packages/packages/core/controllers/BaseLifeCycleController.dart';
+import 'package:softi_packages/packages/core/controllers/IBaseControllerWithLifeCycle.dart';
 import 'package:softi_packages/packages/services/external/presence/presence_service_interface.dart';
 
 enum UserPresenceState { online, offline, away }
 
-class PresenceController extends IBaseLifeCycleController {
+class PresenceController extends IBaseControllerWithLifeCycle {
   final IPresenceService presenceService;
 
   final _userPresence = UserPresenceState.offline.obs;
@@ -14,16 +15,26 @@ class PresenceController extends IBaseLifeCycleController {
   UserPresenceState get userPresence => _userPresence.value;
 
   @override
-  void onDetached() => _setOffline();
+  void onStateChange(AppLifecycleState newState) async {
+    switch (newState) {
+      case AppLifecycleState.detached:
+        _setOffline();
+        break;
 
-  @override
-  void onInactive() => _setAway();
+      case AppLifecycleState.inactive:
+        _setAway();
+        break;
 
-  @override
-  void onPaused() => _setAway();
+      case AppLifecycleState.paused:
+        _setAway();
+        break;
 
-  @override
-  void onResumed() => _setOnline();
+      case AppLifecycleState.resumed:
+        _setOnline();
+        break;
+      default:
+    }
+  }
 
   void _setAway() {
     presenceService.setAway();

@@ -32,8 +32,10 @@ class ResourceRecord<T extends IBaseResourceData> {
         _newValue = await adapter.save(autoCreate);
       }
 
-      data(_newValue);
       fetchCount.value++;
+      data.value = _newValue;
+      data.refresh();
+      fetchCount.refresh();
     });
 
     _initialized = true;
