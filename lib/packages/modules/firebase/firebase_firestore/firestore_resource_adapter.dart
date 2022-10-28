@@ -15,6 +15,21 @@ class FirestoreResourceAdapter<T extends IBaseResourceData> extends IResourceAda
     return _firestoreInstance.collection(res.endpoint());
   }
 
+  // @override
+  // Future<int> count(
+  //   QueryParameters? queryParams, {
+  //   QueryPagination? pagination,
+  //   bool reactive = true,
+  // }) async {
+  //   var _query = _firestoreQueryBuilder(
+  //     _getRef(resource as FirestoreResource<T>),
+  //     params: queryParams,
+  //     pagination: pagination,
+  //   );
+  //   var result = await _query.count().get();
+  //   return result.count;
+  // }
+
   @override
   Stream<QueryResult<T>> find(
     QueryParameters? queryParams, {
