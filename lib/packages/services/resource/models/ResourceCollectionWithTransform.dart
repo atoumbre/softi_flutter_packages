@@ -23,7 +23,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
   // Pagination variables
   final List<StreamSubscription> _subscriptions = [];
   final List<int> _eventCounts = [];
-  final List<List<U>> _dataPages = [];
+  final List<List<T>> _dataPages = [];
   int _pageCount = 0;
   int _queryRecordCount = 0;
   dynamic _lastCursor;
@@ -40,7 +40,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
   // Returned info
   final hasMoreData = true.obs..stream.listen((event) => print('Has more $event'));
   final data = Rx<List<U>>(<U>[]);
-  final changes = Rx<List<DataChange<T>>>(<DataChange<T>>[]);
+  // final changes = Rx<List<DataChange<T>>>(<DataChange<T>>[]);
   final loading = false.obs;
   final initialized = false.obs;
   bool get isEmpty => !hasMoreData() && data().isEmpty;
@@ -121,28 +121,43 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     _subscriptions.add(_sub);
   }
 
+  /// Snapshot handler
   void _handler(QueryResult<T> queryResult, int pageIndex) {
     _eventCounts[pageIndex]++;
 
+    // If first event, init page data and update cursor
     if (_eventCounts[pageIndex] == 1 && pageIndex == (_eventCounts.length - 1)) {
       _lastCursor = queryResult.cursor;
       _dataPages.add([]);
     }
 
-    //
+    // Load page temp data
+    // _dataPages[pageIndex] = queryResult.data; //.map((e) => _transform(e)).toList();
+    // queryResult.data.forEach((e) => _addRecord(e));
 
-    _dataPages[pageIndex] = queryResult.data.map((e) => _transform(e)).toList();
-
-    var _data = _dataPages.reduce((value, element) {
+    _dataPages[pageIndex] = queryResult.data;
+    var _data = _dataPages //
+        .reduce((value, element) {
       return [...value, ...element];
     });
 
+    var _transformedData = _data.map((record) {
+      var index = data.value.indexWhere((element) => element.record.id() == record.id());
+      if (index == -1) {
+        return _transform(record);
+      } else {
+        var _result = data.value[index];
+        _result.record = record;
+        return _result;
+      }
+    });
+
     if (_options.reactiveRecords) {
-      data.value.assignAll(_data);
+      data.value.assignAll(_transformedData);
       data.refresh();
     } else {
       if (_eventCounts[pageIndex] == 1) {
-        data.value.assignAll(_data);
+        data.value.assignAll(_transformedData);
         data.refresh();
       }
     }
@@ -151,8 +166,11 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     //
     if (_options.reactiveChanges) {
       if (_eventCounts[pageIndex] > 1) {
-        changes.value.addAll(queryResult.changes);
-        changes.refresh();
+        queryResult.data.forEach((e) => _addRecord(e));
+        // changes.value.addAll(queryResult.changes);
+
+        data.refresh();
+        // changes.refresh();
       }
     }
 
@@ -178,14 +196,14 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
 
     hasMoreData(true);
     data([]);
-    changes([]);
+    // changes([]);
   }
 
   void dispose() {
     _subscriptions.forEach((element) => element.cancel());
     loading.close();
     data.close();
-    changes.close();
+    // changes.close();
     hasMoreData.close();
   }
 
@@ -193,12 +211,12 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
 
   /// Collection related Service call;
 
-  void _addRecord(U record, [overwrite = false]) {
-    var index = data.value.indexWhere((element) => element.record.id() == record.record.id());
+  void _addRecord(T record) {
+    var index = data.value.indexWhere((element) => element.record.id() == record.id());
     if (index == -1) {
-      data.value.insert(0, record);
+      data.value.insert(0, _transform(record));
     } else {
-      if (overwrite) data.value.replaceRange(index, index + 1, [record]);
+      data.value[index].record = record;
     }
   }
 
@@ -209,7 +227,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     var _result = record..record = _record;
 
     if (!_options.reactiveRecords) {
-      _addRecord(_result, true);
+      _addRecord(_record);
       if (refresh) data.refresh();
     }
 

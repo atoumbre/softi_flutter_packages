@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:softi_packages/packages/core/controllers/BaseViewController.dart';
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
-import 'package:softi_packages/packages/services/resource/interfaces/i_resource_adapter.dart';
 import 'package:softi_packages/packages/services/resource/models/ResourceCollectionWithTransform.dart';
 import 'package:softi_packages/packages/services/resource/models/filters.dart';
 import 'package:softi_packages/packages/services/resource/models/query.dart';
@@ -24,7 +23,7 @@ mixin CollectionWithTransformControllerMixin<T extends IBaseResourceData, U exte
   //! Getters
   List<U> get recordList => collection.data();
   int get recordCount => collection.data().length;
-  List<DataChange<T>> get changesList => collection.changes();
+  // List<DataChange<T>> get changesList => collection.changes();
   RxBool get hasMoreData => collection.hasMoreData;
   RxBool get isResourceLoading => collection.loading;
 
