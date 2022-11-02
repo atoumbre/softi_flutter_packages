@@ -3,20 +3,14 @@ import 'package:get/get.dart';
 import 'package:softi_packages/packages/core/controllers/BaseViewController.dart';
 
 abstract class IBaseView<T extends IBaseViewController> extends StatelessWidget {
-  IBaseView(T? controller, {super.key, String? tag})
+  IBaseView(T? controller, {super.key, String? tag, bool? permanent})
       : _controller = controller == null //
             ? Get.find<T>(tag: tag)
-            : Get.put(controller, tag: tag);
+            : Get.put(controller, tag: tag, permanent: permanent ?? false);
 
   final T _controller;
 
   Widget builder(T controller);
-
-  // T init() => Get.find<T>();
-  // Widget? loadingBuilder(T controller) => null;
-  // Widget errorBuilder(T controller) => Center(child: Text('An Error Occurs', style: TextStyle(color: Colors.red)));
-  // String? get tag => null;
-  // bool get autoRemove => true;
 
   @override
   Widget build(BuildContext context) {
@@ -24,5 +18,23 @@ abstract class IBaseView<T extends IBaseViewController> extends StatelessWidget 
       print(_controller.controllerStatus);
       return builder(_controller);
     });
+
+    //   return GetX<T>(
+    //     init: controller ?? Get.find<T>(tag: tag),
+    //     tag: tag,
+    //     autoRemove: !(permanent ?? false),
+    //     builder: (controller) {
+    //       print(controller.controllerStatus);
+    //       // if (controller.controllerStatus() == ControllerStatus.error) {
+    //       //   return errorBuilder(controller);
+    //       // }
+
+    //       // if (controller.controllerStatus() == ControllerStatus.busy) {
+    //       //   return loadingBuilder(controller) ?? builder(controller);
+    //       // }
+
+    //       return builder(controller);
+    //     },
+    //   );
   }
 }

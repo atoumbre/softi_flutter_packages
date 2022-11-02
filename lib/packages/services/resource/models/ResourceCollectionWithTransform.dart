@@ -40,7 +40,6 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
   // Returned info
   final hasMoreData = true.obs..stream.listen((event) => print('Has more $event'));
   final data = Rx<List<U>>(<U>[]);
-  // final changes = Rx<List<DataChange<T>>>(<DataChange<T>>[]);
   final loading = false.obs;
   final initialized = false.obs;
   bool get isEmpty => !hasMoreData() && data().isEmpty;
@@ -93,12 +92,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     _eventCounts.add(0);
 
     var _pageIndex = _pageCount - 1;
-    var _sub = _adapter
-        .find(
-      _params,
-      pagination: _pagination,
-      reactive: _options.reactive,
-    )
+    var _sub = _adapter.find(_params, pagination: _pagination, reactive: _options.reactive) //
         .listen(
       (r) {
         _handler(r, _pageIndex);
@@ -112,7 +106,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
         _loading = false;
         SchedulerBinding.instance.addPostFrameCallback((_) {
           loading(false);
-          loading(true);
+          initialized(true);
         });
       },
       cancelOnError: false,
@@ -131,10 +125,38 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
       _dataPages.add([]);
     }
 
-    // Load page temp data
-    // _dataPages[pageIndex] = queryResult.data; //.map((e) => _transform(e)).toList();
-    // queryResult.data.forEach((e) => _addRecord(e));
+    if (_options.reactiveRecords) {
+      var _res = _getTransformedData(pageIndex, queryResult);
+      data.value.assignAll(_res);
+      data.refresh();
+    } else {
+      if (_eventCounts[pageIndex] == 1) {
+        var _res = _getTransformedData(pageIndex, queryResult);
+        data.value.assignAll(_res);
+        data.refresh();
+      }
+    }
 
+    // print(data.length);
+    //
+    if (_options.reactiveChanges) {
+      if (_eventCounts[pageIndex] > 1) {
+        queryResult.data.forEach((e) => _addRecord(e));
+        data.refresh();
+      }
+    }
+
+    // Check if we have more data
+    hasMoreData(
+      data.value.length >= _queryRecordCount && _queryRecordCount < _options.maxRecordNumber,
+    );
+
+    if (!_options.reactive && !hasMoreData.value) {
+      _subscriptions.forEach((element) => element.cancel());
+    }
+  }
+
+  Iterable<U> _getTransformedData(int pageIndex, QueryResult<T> queryResult) {
     _dataPages[pageIndex] = queryResult.data;
     var _data = _dataPages //
         .reduce((value, element) {
@@ -151,41 +173,11 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
         return _result;
       }
     });
-
-    if (_options.reactiveRecords) {
-      data.value.assignAll(_transformedData);
-      data.refresh();
-    } else {
-      if (_eventCounts[pageIndex] == 1) {
-        data.value.assignAll(_transformedData);
-        data.refresh();
-      }
-    }
-
-    // print(data.length);
-    //
-    if (_options.reactiveChanges) {
-      if (_eventCounts[pageIndex] > 1) {
-        queryResult.data.forEach((e) => _addRecord(e));
-        // changes.value.addAll(queryResult.changes);
-
-        data.refresh();
-        // changes.refresh();
-      }
-    }
-
-    // Check if we have more data
-    hasMoreData(
-      data.value.length >= _queryRecordCount && _queryRecordCount < _options.maxRecordNumber,
-    );
-
-    if (!_options.reactive && !hasMoreData.value) {
-      _subscriptions.forEach((element) => element.cancel());
-    }
+    return _transformedData;
   }
 
-  void _reset() {
-    _subscriptions.forEach((element) => element.cancel());
+  void _reset() async {
+    _subscriptions.forEach((element) async => await element.cancel());
     _subscriptions.clear();
     _eventCounts.clear();
     _dataPages.clear();

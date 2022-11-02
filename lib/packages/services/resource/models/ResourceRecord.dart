@@ -10,10 +10,9 @@ class ResourceRecord<T extends IBaseResourceData> {
 
   final Rxn<T> data = Rxn<T>();
   final RxInt fetchCount = 0.obs;
+  final RxBool initialized = false.obs;
   late StreamSubscription<T?> _sub;
   late String _id;
-
-  bool _initialized = false;
 
   String get id => data()?.id() ?? '';
 
@@ -38,10 +37,10 @@ class ResourceRecord<T extends IBaseResourceData> {
       fetchCount.refresh();
     });
 
-    _initialized = true;
+    initialized(true);
   }
 
-  Future<T?> save() async {
+  Future<T?> save([ignoreNextUpdate = false]) async {
     if (data.value == null) return null;
     return adapter.save(data.value!);
   }
@@ -51,21 +50,23 @@ class ResourceRecord<T extends IBaseResourceData> {
   }
 
   void reset([silent = false]) {
-    if (_initialized) _sub.cancel();
-    _initialized = false;
+    if (initialized.value) _sub.cancel();
     _id = '';
     data.value = null;
+    initialized.value = false;
     fetchCount.value = 0;
     if (!silent) {
       data.refresh();
       fetchCount.refresh();
+      initialized.refresh();
     }
   }
 
   void dispose() {
     reset();
     data.close();
-    fetchCount.close;
+    fetchCount.close();
+    initialized.close();
   }
 
   T? call([T? newData]) {
