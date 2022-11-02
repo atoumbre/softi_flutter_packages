@@ -141,7 +141,17 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     //
     if (_options.reactiveChanges) {
       if (_eventCounts[pageIndex] > 1) {
-        queryResult.data.forEach((e) => _addRecord(e));
+        // Update and add new records
+        queryResult.changes //
+            .where((element) => element.type != DataChangeType.removed)
+            .forEach((e) {
+          if (e.data != null) _addRecord(e.data!);
+        });
+
+        // Delete removed items
+        var removedIds = queryResult.changes.where((element) => element.type == DataChangeType.removed).toList().map((e) => e.data?.id() ?? '');
+        data.value.removeWhere((record) => removedIds.contains(record.record.id()));
+
         data.refresh();
       }
     }

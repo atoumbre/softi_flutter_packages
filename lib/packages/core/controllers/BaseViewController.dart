@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:softi_packages/packages/core/controllers/BaseController.dart';
 import 'package:softi_packages/packages/core/services/BaseService.dart';
+import 'package:uuid/uuid.dart';
 
 enum ControllerStatus { idle, busy, error }
 
@@ -27,40 +28,71 @@ abstract class IBaseViewController extends IBaseController {
     tasksStatus({});
   }
 
-  Future<Result<ServiceFailure, List<R>>> serviceMultiTaskHandler<R>(
-    Iterable<Future<R> Function()> tasks, {
-    Future<void> Function(R)? onSuccess,
-    Future<void> Function(ServiceFailure)? onFailure,
+  Future<List<Result<ServiceFailure, R>>> serviceMultiTaskHandler<R>(
+    Iterable<Future<R> Function(String)> tasks, {
+    Future<void> Function(R, String)? onSuccess,
+    Future<void> Function(ServiceFailure, String)? onFailure,
   }) async {
     // Protect
     if (isBusy) {
-      return Error<ServiceFailure, List<R>>(ServiceFailure(
-        code: 'BUSY_CONTROLLER',
-        service: '_INTERNAL_',
-      ));
+      return [
+        Error<ServiceFailure, R>(ServiceFailure(
+          code: 'BUSY_CONTROLLER',
+          service: '_INTERNAL_',
+        ))
+      ];
     }
 
     changeStatusToBusy();
     _resetTaskState();
 
-    try {
-      var result = await Future.wait(tasks.map((task) => task()));
+    Iterable<Future<Result<ServiceFailure, R>>> _tasks = tasks.map((task) async {
+      var taskId = Uuid().v4();
 
-      if (onSuccess != null) await Future.wait(result.map((r) => onSuccess(r)));
+      try {
+        var result = await task(taskId);
 
-      changeStatusToIdle();
-      return Success<ServiceFailure, List<R>>(result);
-    } on ServiceFailure catch (e) {
-      if (onFailure != null) await onFailure(e);
+        if (onSuccess != null) await onSuccess(result, taskId);
 
-      changeStatusToError();
-      return Error(e);
-    } catch (e) {
-      changeStatusToError();
-      rethrow;
-    } finally {
-      // toggleIdle();
-    }
+        // changeStatusToIdle();
+        return Success<ServiceFailure, R>(result);
+      } on ServiceFailure catch (e) {
+        if (onFailure != null) await onFailure(e, taskId);
+
+        // changeStatusToError();
+        return Error<ServiceFailure, R>(e);
+      } catch (e) {
+        // changeStatusToError();
+        rethrow;
+      }
+
+      // finally {
+      //   // toggleIdle();
+      // }
+    });
+
+    var results = await Future.wait(_tasks);
+    changeStatusToIdle();
+
+    return results;
+    // try {
+    //   var result = await Future.wait(tasks.map((task) => task()));
+
+    //   if (onSuccess != null) await Future.wait(result.map((r) => onSuccess(r)));
+
+    //   changeStatusToIdle();
+    //   return Success<ServiceFailure, List<R>>(result);
+    // } on ServiceFailure catch (e) {
+    //   if (onFailure != null) await onFailure(e);
+
+    //   changeStatusToError();
+    //   return Error(e);
+    // } catch (e) {
+    //   changeStatusToError();
+    //   rethrow;
+    // } finally {
+    //   // toggleIdle();
+    // }
   }
 
   Future<Result<ServiceFailure, R>> serviceTaskHandler<R>(
