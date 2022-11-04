@@ -5,7 +5,7 @@ import 'package:softi_packages/packages/core/controllers/BaseController.dart';
 
 mixin AuthControllerMixin on IBaseController {
   final authUser = Rxn<AuthUser>();
-  final userId = ''.obs;
+  final authUserId = ''.obs;
 
   /// GETTERS
 
@@ -20,7 +20,7 @@ mixin AuthControllerMixin on IBaseController {
 
     return authUser.bindStream(authApi.authUserStream.skip(0).map((event) {
       print('authUser.bindStream fired: ${event?.uid}');
-      userId(event?.uid ?? '');
+      authUserId(event?.uid ?? '');
       return event;
     }));
   }

@@ -62,8 +62,11 @@ abstract class IBaseViewController extends IBaseController {
         // changeStatusToError();
         return Error<ServiceFailure, R>(e);
       } catch (e) {
-        // changeStatusToError();
-        rethrow;
+        return Error<ServiceFailure, R>(ServiceFailure(
+          code: 'CONTROLLER_INTERNAL_ERROR',
+          service: '_INTERNAL_',
+          rawError: e,
+        ));
       }
 
       // finally {
@@ -72,6 +75,7 @@ abstract class IBaseViewController extends IBaseController {
     });
 
     var results = await Future.wait(_tasks);
+
     changeStatusToIdle();
 
     return results;

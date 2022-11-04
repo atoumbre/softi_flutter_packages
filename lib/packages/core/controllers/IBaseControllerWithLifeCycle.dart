@@ -71,7 +71,7 @@ mixin LifeCycleMixin on WidgetsBindingObserver {
     _sub = appLifecycleState.listenAndPump((event) {
       if (state == event) {
         _sub?.cancel();
-        if (!completer.isCompleted) completer.complete();
+        completer.complete();
       } else {
         print(state);
       }

@@ -3,12 +3,13 @@ import 'package:get/get.dart';
 import 'package:softi_packages/packages/core/controllers/BaseViewController.dart';
 
 abstract class IBaseView<T extends IBaseViewController> extends StatelessWidget {
-  IBaseView(T? controller, {super.key, String? tag, bool? permanent})
+  IBaseView(T? controller, {super.key, this.tag, bool? permanent})
       : _controller = controller == null //
             ? Get.find<T>(tag: tag)
             : Get.put(controller, tag: tag, permanent: permanent ?? false);
 
   final T _controller;
+  final String? tag;
 
   Widget builder(T controller);
 
