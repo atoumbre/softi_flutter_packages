@@ -43,6 +43,9 @@ mixin LifeCycleMixin on WidgetsBindingObserver {
   @mustCallSuper
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    appLifecycleState(state);
+    print('AppState $appLifecycleState');
+
     switch (state) {
       case AppLifecycleState.resumed:
         onStateChange(AppLifecycleState.resumed);
@@ -60,20 +63,17 @@ mixin LifeCycleMixin on WidgetsBindingObserver {
   }
 
   void onStateChange(AppLifecycleState newState);
-  // void onPaused();
-  // void onInactive();
-  // void onDetached();
 
-  Future<void> waitForState([AppLifecycleState state = AppLifecycleState.resumed]) {
+  Future<void> waitForState(AppLifecycleState state) {
     var completer = Completer();
     StreamSubscription? _sub;
 
-    _sub = appLifecycleState.listenAndPump((event) {
+    _sub = appLifecycleState.listen((event) {
       if (state == event) {
         _sub?.cancel();
         completer.complete();
       } else {
-        print(state);
+        print(event);
       }
     });
 

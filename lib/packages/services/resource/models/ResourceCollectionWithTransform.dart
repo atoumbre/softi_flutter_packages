@@ -31,7 +31,6 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
 
   // State tracking variables
   bool _loading = false;
-  bool _firstRun = true;
 
   //  Cache Query params for next call
   late QueryParameters _params;
@@ -49,25 +48,26 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     CollectionOptions options = const CollectionOptions(),
   }) {
     // reset on each call of requestData, use requestMoreData for more data
-    if (!_firstRun) _reset();
-    _firstRun = false;
+    // if (!_firstRun) _reset();
+    // _firstRun = false;
 
     // Save params for next call
     _params = params;
     _options = options;
 
     // request data
-    _requestData();
+    _requestData(true);
   }
 
-  Future<void> requestMoreData({refresh = false}) async {
-    if (refresh) _reset();
-    _requestData();
+  Future<void> requestMoreData() async {
+    _requestData(false);
   }
 
-  void _requestData() {
-    if (!hasMoreData.value) return;
+  void _requestData(bool refresh) {
+    if (!hasMoreData.value && !refresh) return;
     if (_loading) return;
+
+    if (refresh) _reset();
 
     _loading = true;
     SchedulerBinding.instance.addPostFrameCallback((_) {
