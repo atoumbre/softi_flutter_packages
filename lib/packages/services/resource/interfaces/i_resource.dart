@@ -51,3 +51,14 @@ mixin BaseResourceDataMixin on IBaseResourceData {
   @override
   bool isValid() => _id != '';
 }
+
+extension SetId on IBaseResourceData {
+  dynamic setId<T extends BaseResourceDataMixin>(BaseResourceDataMixin? a) {
+    if (a == null) return this;
+
+    return this
+      ..id(a.id())
+      ..createdAt(a.createdAt())
+      ..updatedAt(a.updatedAt());
+  }
+}
