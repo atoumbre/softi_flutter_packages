@@ -228,7 +228,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     if (_record == null) return null;
     var _result = record..record = _record;
 
-    if (!_options.reactiveRecords) {
+    if (!_options.reactiveRecords && !_options.reactiveChanges) {
       _addRecord(_record);
       if (refresh) data.refresh();
     }
