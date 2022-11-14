@@ -10,7 +10,8 @@ import 'package:softi_packages/packages/services/resource/models/query.dart';
 class Ext<T extends IBaseResourceData> {
   T record;
   bool isNew;
-  Ext(this.record, {this.isNew = false});
+  bool isSelected;
+  Ext(this.record, {this.isNew = false, this.isSelected = false});
 }
 
 class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext<T>> {
@@ -37,37 +38,32 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
   late CollectionOptions _options;
 
   // Returned info
+  final selectedItemId = ''.obs;
   final hasMoreData = true.obs..stream.listen((event) => print('Has more $event'));
   final data = Rx<List<U>>(<U>[]);
   final loading = false.obs;
   final initialized = false.obs;
+
   bool get isEmpty => !hasMoreData() && data().isEmpty;
+  Map<String, U> get dataMap => Map.fromEntries(data().where((e) => e.record.id() != '').map((item) => MapEntry(item.record.id(), item)));
+  U? get selectedItem => selectedItemId() == '' ? null : dataMap[selectedItemId()];
 
-  void requestData(
-    QueryParameters params, {
-    CollectionOptions options = const CollectionOptions(),
-  }) {
-    // reset on each call of requestData, use requestMoreData for more data
-    // if (!_firstRun) _reset();
-    // _firstRun = false;
+  int getIndex(String id) => data.value.indexWhere((e) => e.record.id() != '');
 
-    // Save params for next call
+  void requestData(QueryParameters params, {CollectionOptions options = const CollectionOptions()}) {
     _params = params;
     _options = options;
 
-    // request data
-    _requestData(true);
+    requestMoreData(refresh: true);
   }
 
-  Future<void> requestMoreData() async {
-    _requestData(false);
-  }
-
-  void _requestData(bool refresh) {
+  void requestMoreData({bool refresh = false}) {
     if (!hasMoreData.value && !refresh) return;
     if (_loading) return;
 
-    if (refresh) _reset();
+    if (refresh) {
+      reset();
+    }
 
     _loading = true;
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -149,7 +145,11 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
         });
 
         // Delete removed items
-        var removedIds = queryResult.changes.where((element) => element.type == DataChangeType.removed).toList().map((e) => e.data?.id() ?? '');
+        var removedIds = queryResult.changes
+            .where((element) => element.type == DataChangeType.removed) //
+            .toList()
+            .map((e) => e.data?.id() ?? '');
+
         data.value.removeWhere((record) => removedIds.contains(record.record.id()));
 
         data.refresh();
@@ -186,7 +186,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     return _transformedData;
   }
 
-  void _reset() async {
+  void reset() async {
     _subscriptions.forEach((element) async => await element.cancel());
     _subscriptions.clear();
     _eventCounts.clear();
@@ -209,17 +209,20 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     hasMoreData.close();
   }
 
-  void reset() => _reset();
+  // void reset() => _reset();
 
   /// Collection related Service call;
 
-  void _addRecord(T record) {
+  int _addRecord(T record) {
     var index = data.value.indexWhere((element) => element.record.id() == record.id());
     if (index == -1) {
       data.value.insert(0, _transform(record));
+      index = 0;
     } else {
       data.value[index].record = record;
     }
+
+    return index;
   }
 
   Future<U?> save(U record, {bool refresh = false, bool local = false}) async {
@@ -247,18 +250,34 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
 
     if (!local) await _adapter.delete(_id);
 
-    if (!_options.reactiveRecords) {
+    if (!_options.reactive) {
       data.value.removeAt(_index);
       if (refresh) data.refresh();
     }
   }
 
-  void handleListItemCreation(int index) {
-    // when item is created we request more data when we reached the end of current page
-    // print('${collection.data.value.length} - ${collection.hasMoreData()} - $index');
+  void selectRecords(List<String> ids, {required bool Function(U) critiria, refresh = true}) {
+    var i = 0;
+    data.value.forEach((element) {
+      data.value[i].isSelected = critiria(element);
+      i++;
+    });
+    if (refresh) data.refresh();
+  }
 
-    if (data.value.length == (index + 1) && hasMoreData.value) {
-      requestMoreData();
+  void selectItem({String? id, int? index, bool refresh = false, local = false}) {
+    if (id == null && index == null) return;
+
+    var _index = index ?? data.value.indexWhere((element) => element.record.id() == id);
+
+    if (_index == -1) {
+      selectedItemId.value = '';
+    } else {
+      selectedItemId.value = data.value[_index].record.id();
+    }
+
+    if (refresh) {
+      selectedItemId.refresh();
     }
   }
 }

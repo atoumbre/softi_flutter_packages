@@ -22,7 +22,7 @@ class TString {
   String get tr {
     var locale = Get.locale ?? Get.fallbackLocale ?? Get.deviceLocale;
     var lang = locale!.languageCode;
-    var langAndcountry = "${lang}${Get.locale!.countryCode != null ? '_${Get.locale!.countryCode}' : ''}";
+    var langAndcountry = '${lang}${Get.locale!.countryCode != null ? '_${Get.locale!.countryCode}' : ''}';
 
     return manual[langAndcountry] ?? manual[lang] ?? output[langAndcountry] ?? output[lang] ?? input;
   }
