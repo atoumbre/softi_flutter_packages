@@ -46,7 +46,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
 
   bool get isEmpty => !hasMoreData() && data().isEmpty;
   Map<String, U> get dataMap => Map.fromEntries(data().where((e) => e.record.id() != '').map((item) => MapEntry(item.record.id(), item)));
-  U? get selectedItem => selectedItemId() == '' ? null : dataMap[selectedItemId()];
+  U? get selectedItem => selectedItemId() != '' ? dataMap[selectedItemId()] : (dataMap.values.isEmpty ? null : dataMap.values.first);
 
   int getIndex(String id) => data.value.indexWhere((e) => e.record.id() != '');
 
@@ -289,7 +289,7 @@ class CollectionOptions {
   final bool reactiveChanges;
 
   const CollectionOptions({
-    this.reactiveRecords = true,
+    this.reactiveRecords = false,
     this.reactiveChanges = true,
     this.pageSize = 10,
     this.maxRecordNumber = 100,
