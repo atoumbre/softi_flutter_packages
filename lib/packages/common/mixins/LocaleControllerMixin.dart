@@ -7,6 +7,8 @@ import 'package:softi_packages/packages/services/app/local_storage/local_storage
 import 'package:softi_packages/packages/core/controllers/BaseController.dart';
 
 mixin LocaleControllerMixin on IBaseController {
+  List<String> get supportedLocale;
+
   ILocalStore get _store => Get.find();
 
   final _locale = Get.deviceLocale!.obs;
@@ -14,8 +16,10 @@ mixin LocaleControllerMixin on IBaseController {
   Locale get locale => _locale.value;
 
   Future<void> _setLanguage(String languageCode) async {
+    var _l = !supportedLocale.contains(languageCode) ? supportedLocale[0] : languageCode;
+
     var l = Get.locale!.toString().split('_');
-    var newLocale = Locale(languageCode, l.length > 1 ? l[1] : null);
+    var newLocale = Locale(_l, l.length > 1 ? l[1] : null);
     await Get.updateLocale(newLocale);
 
     _locale(newLocale);
