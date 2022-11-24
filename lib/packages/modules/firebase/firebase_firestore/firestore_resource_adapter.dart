@@ -46,10 +46,18 @@ class FirestoreResourceAdapter<T extends IBaseResourceData> extends IResourceAda
 
     var _result = _querySnapshot.map<QueryResult<T>>(
       (snapshot) {
-        var data = snapshot.docs
-            //! Filter possible here
-            .map<T>((doc) => fromFirestore<T>(resource as FirestoreResource<T>, doc)!)
-            .toList();
+        var i = 0;
+        var _docs = snapshot.docs;
+
+        //! Filter possible here
+        var data = _docs.map<T>((doc) {
+          print(i++);
+          var res = fromFirestore<T>(resource as FirestoreResource<T>, doc);
+          if (res == null) {
+            print(res);
+          }
+          return res!;
+        }).toList();
 
         var changes = snapshot.docChanges
             //! Filter possible here

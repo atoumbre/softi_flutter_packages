@@ -27,7 +27,9 @@ mixin LocaleControllerMixin on IBaseController {
 
   Future<void> setLanguage(String languageCode, {save = true}) async {
     await _setLanguage(languageCode);
-    if (save) await _store.setKey('language', languageCode);
+    if (save) {
+      await _store.setKey('language', languageCode);
+    }
   }
 
   Future<void> getLanguage() async {

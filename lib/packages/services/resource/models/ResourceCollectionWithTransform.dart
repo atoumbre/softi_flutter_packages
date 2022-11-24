@@ -176,11 +176,12 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     var _transformedData = _data.map((record) {
       var index = data.value.indexWhere((element) => element.record.id() == record.id());
       if (index == -1) {
-        return _transform(record);
+        return _transform(record); //..isEdited = false;
       } else {
         var _result = data.value[index];
+        // if (_result.isEdited == true) return _result;
         _result.record = record;
-        return _result;
+        return _result; //..isEdited = false;
       }
     });
     return _transformedData;

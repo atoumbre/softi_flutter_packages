@@ -8,7 +8,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  cloud_firestore: ^4.0.3
+  cloud_firestore: ^4.0.2
   connectivity: ^3.0.6
   firebase_analytics: ^10.0.3
   firebase_auth: ^4.1.0
@@ -16,7 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_easyloading: ^3.0.5
-  flutter_facebook_auth: ^4.4.0
+  flutter_facebook_auth: ^5.0.6
   flutter_form_builder: ^7.4.0
   flutter_image_compress: ^1.1.0
   flutter_secure_storage: ^6.0.0
@@ -41,5 +41,3 @@ dev_dependencies:
   json_serializable: ^6.3.2
 
 flutter: null
-
-# find . -type f > ../files.txt
