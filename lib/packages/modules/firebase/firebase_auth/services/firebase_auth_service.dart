@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:softi_packages/packages/services/auth/interfaces/i_auth_service.dart';
-import 'package:softi_packages/packages/services/auth/models/auth_user.dart';
 import 'package:softi_packages/packages/core/services/BaseService.dart';
 import 'package:softi_packages/packages/modules/firebase/firebase_auth/models/settings.dart';
 import 'package:softi_packages/packages/modules/firebase/firebase_auth/services/firebase_auth_provider.dart';
 import 'package:softi_packages/packages/modules/firebase/firebase_auth/services/providers/firebase_auth_apple.dart';
 import 'package:softi_packages/packages/modules/firebase/firebase_auth/services/providers/firebase_auth_email.dart';
 import 'package:softi_packages/packages/modules/firebase/firebase_auth/services/providers/firebase_auth_email_link.dart';
-import 'package:softi_packages/packages/modules/firebase/firebase_auth/services/providers/firebase_auth_facebook.dart';
 import 'package:softi_packages/packages/modules/firebase/firebase_auth/services/providers/firebase_auth_google.dart';
 import 'package:softi_packages/packages/modules/firebase/firebase_auth/services/providers/firebase_auth_phone.dart';
+import 'package:softi_packages/packages/services/auth/interfaces/i_auth_service.dart';
+import 'package:softi_packages/packages/services/auth/models/auth_user.dart';
 
 class FirebaseAuthService extends IAuthService {
   final FirebaseAuth firebaseAuth;
@@ -19,7 +18,7 @@ class FirebaseAuthService extends IAuthService {
 
   final FirebaseAppleSignin appleSignin;
   final FirebaseGoogleSignin googleSignin;
-  final FirebaseAuthFacebookSignIn facebookSignin;
+  // final FirebaseAuthFacebookSignIn facebookSignin;
   final FirebaseAuthEmalPassword emailSignin;
   final FirebaseAuthPhone phoneSignin;
   final FirebaseAuthEmailLink emailLinkSignin;
@@ -30,7 +29,7 @@ class FirebaseAuthService extends IAuthService {
           appleSignInCallbackUrl: settings.appleSignInCallbackUrl,
           appleSignInClientId: settings.appleSignInClientId,
         ),
-        facebookSignin = FirebaseAuthFacebookSignIn(firebaseAuth),
+        // facebookSignin = FirebaseAuthFacebookSignIn(firebaseAuth),
         emailLinkSignin = FirebaseAuthEmailLink(
           firebaseAuth,
           actionCodeSettings: settings.actionCodeSettings,

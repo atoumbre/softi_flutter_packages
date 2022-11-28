@@ -11,7 +11,7 @@ abstract class IAuthService extends IBaseService {
 
   IAppleAuthProvider get appleSignin;
   IGoogleAuthProvider get googleSignin;
-  IFacebookAuthProvider get facebookSignin;
+  // IFacebookAuthProvider get facebookSignin;
   IEmailAndLinkAuthProvider get emailLinkSignin;
   IEmailAndPasswordAuthProvider get emailSignin;
   IPhoneAuthProvider get phoneSignin;
