@@ -74,7 +74,6 @@ export 'package:softi_packages/packages/modules/form/helpers/map_utils.dart';
 ///
 export 'package:softi_packages/packages/services/resource/controllers/CollectionController.dart';
 export 'package:softi_packages/packages/services/resource/controllers/CollectionControllerMixin.dart';
-export 'package:softi_packages/packages/services/resource/controllers/CollectionWithTransformControllerMixin.dart';
 export 'package:softi_packages/packages/services/resource/controllers/RecordController.dart';
 export 'package:softi_packages/packages/services/resource/controllers/RecordControllerMixin.dart';
 export 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
