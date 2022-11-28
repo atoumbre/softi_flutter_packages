@@ -11,7 +11,7 @@ abstract class IBaseView<T extends IBaseViewController> extends StatelessWidget 
   final T _controller;
   final String? tag;
 
-  Widget builder(T controller);
+  Widget builder(T con);
 
   @override
   Widget build(BuildContext context) {
