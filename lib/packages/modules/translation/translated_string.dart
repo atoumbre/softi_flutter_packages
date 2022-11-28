@@ -19,7 +19,7 @@ class TString {
         manual = manual,
         output = const <String, String>{};
 
-  String get tr {
+  String get _tr {
     var locale = Get.locale ?? Get.fallbackLocale ?? Get.deviceLocale;
     var lang = locale!.languageCode;
     var langAndcountry = '${lang}${Get.locale!.countryCode != null ? '_${Get.locale!.countryCode}' : ''}';
@@ -27,9 +27,12 @@ class TString {
     return manual[langAndcountry] ?? manual[lang] ?? output[langAndcountry] ?? output[lang] ?? input;
   }
 
-  String trans({count = 1, List<String> args = const [], Map<String, String> params = const {}}) {
-    var transList = tr.split('|');
-    var trans = count == 1 ? transList[0] : (transList.length == 1 ? transList[0] : transList[1]);
+  String get tr => trans();
+
+  String trans({int count = 1, List<String> args = const [], Map<String, String> params = const {}}) {
+    var transList = _tr.split('|');
+
+    var trans = count == 1 || transList.length == 1 ? transList[0] : transList[1];
 
     // PLURAL
     trans = trans.replaceFirst(RegExp(r'%p'), count.toString());
