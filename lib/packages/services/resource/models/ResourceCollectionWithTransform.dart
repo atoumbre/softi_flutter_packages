@@ -32,6 +32,8 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
 
   // State tracking variables
   bool _loading = false;
+  bool _paused = false;
+  bool _resumed = false;
 
   //  Cache Query params for next call
   late QueryParameters _params;
@@ -185,6 +187,16 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
       }
     });
     return _transformedData;
+  }
+
+  void pause() {
+    if (_paused) return;
+    _subscriptions.forEach((element) => element.pause());
+  }
+
+  void resume() {
+    if (_resumed) return;
+    _subscriptions.forEach((element) => element.resume());
   }
 
   void reset() async {
