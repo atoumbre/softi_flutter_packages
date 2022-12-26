@@ -28,7 +28,7 @@ abstract class IBaseViewController extends IBaseController {
     tasksStatus({});
   }
 
-  Future<List<Result<ServiceFailure, R>>> serviceMultiTaskHandler<R>(
+  Future<List<Result<R, ServiceFailure>>> serviceMultiTaskHandler<R>(
     Iterable<Future<R> Function(String)> tasks, {
     Future<void> Function(R, String)? onSuccess,
     Future<void> Function(ServiceFailure, String)? onFailure,
@@ -36,7 +36,7 @@ abstract class IBaseViewController extends IBaseController {
     // Protect
     if (isBusy) {
       return [
-        Error<ServiceFailure, R>(ServiceFailure(
+        Error<R, ServiceFailure>(ServiceFailure(
           code: 'BUSY_CONTROLLER',
           service: '_INTERNAL_',
         ))
@@ -46,7 +46,7 @@ abstract class IBaseViewController extends IBaseController {
     changeStatusToBusy();
     _resetTaskState();
 
-    Iterable<Future<Result<ServiceFailure, R>>> _tasks = tasks.map((task) async {
+    Iterable<Future<Result<R, ServiceFailure>>> _tasks = tasks.map((task) async {
       var taskId = Uuid().v4();
 
       try {
@@ -55,14 +55,14 @@ abstract class IBaseViewController extends IBaseController {
         if (onSuccess != null) await onSuccess(result, taskId);
 
         // changeStatusToIdle();
-        return Success<ServiceFailure, R>(result);
+        return Success<R, ServiceFailure>(result);
       } on ServiceFailure catch (e) {
         if (onFailure != null) await onFailure(e, taskId);
 
         // changeStatusToError();
-        return Error<ServiceFailure, R>(e);
+        return Error<R, ServiceFailure>(e);
       } catch (e) {
-        return Error<ServiceFailure, R>(ServiceFailure(
+        return Error<R, ServiceFailure>(ServiceFailure(
           code: 'CONTROLLER_INTERNAL_ERROR',
           service: '_INTERNAL_',
           rawError: e,
@@ -99,7 +99,7 @@ abstract class IBaseViewController extends IBaseController {
     // }
   }
 
-  Future<Result<ServiceFailure, R>> serviceTaskHandler<R>(
+  Future<Result<R, ServiceFailure>> serviceTaskHandler<R>(
     Future<R> Function() task, {
     Future<void> Function(R)? onSuccess,
     Future<void> Function(ServiceFailure)? onFailure,
@@ -146,7 +146,8 @@ abstract class IBaseViewController extends IBaseController {
     // SchedulerBinding.instance.addPostFrameCallback((_) {
     controllerStatus(newStatus);
     // });
-    if (ControllerStatus.error == newStatus) Future.delayed(Duration(seconds: 2)).then((_) => controllerStatus(ControllerStatus.idle));
+    if (ControllerStatus.error == newStatus)
+      Future.delayed(Duration(seconds: 2)).then((_) => controllerStatus(ControllerStatus.idle));
   }
 
   void changeStatusToIdle() {
