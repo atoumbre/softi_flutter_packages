@@ -47,10 +47,12 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
   final initialized = false.obs;
 
   bool get isEmpty => !hasMoreData() && data().isEmpty;
-  Map<String, U> get dataMap => Map.fromEntries(data().where((e) => e.record.id() != '').map((item) => MapEntry(item.record.id(), item)));
-  U? get selectedItem => selectedItemId() != '' ? dataMap[selectedItemId()] : (dataMap.values.isEmpty ? null : dataMap.values.first);
+  Map<String, U> get dataMap =>
+      Map.fromEntries(data().where((e) => e.record.id() != '').map((item) => MapEntry(item.record.id(), item)));
+  U? get selectedItem =>
+      selectedItemId() != '' ? dataMap[selectedItemId()] : (dataMap.values.isEmpty ? null : dataMap.values.first);
 
-  int getIndex(String id) => data.value.indexWhere((e) => e.record.id() != '');
+  int getIndex(String itemId) => data.value.indexWhere((element) => element.record.id() == itemId);
 
   void requestData(QueryParameters params, {CollectionOptions options = const CollectionOptions()}) {
     _params = params;
@@ -126,26 +128,17 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
     if (_options.reactiveRecords) {
       var _res = _getTransformedData(pageIndex, queryResult);
       data.value.assignAll(_res);
-      data.refresh();
     } else {
       if (_eventCounts[pageIndex] == 1) {
         var _res = _getTransformedData(pageIndex, queryResult);
         data.value.assignAll(_res);
-        data.refresh();
       }
     }
 
     // print(data.length);
     //
-    if (_options.reactiveChanges) {
+    if (_options.reactiveChanges && !_options.reactiveRecords) {
       if (_eventCounts[pageIndex] > 1) {
-        // Update and add new records
-        queryResult.changes //
-            .where((element) => element.type != DataChangeType.removed)
-            .forEach((e) {
-          if (e.data != null) _addRecord(e.data!);
-        });
-
         // Delete removed items
         var removedIds = queryResult.changes
             .where((element) => element.type == DataChangeType.removed) //
@@ -154,8 +147,15 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
 
         data.value.removeWhere((record) => removedIds.contains(record.record.id()));
 
-        data.refresh();
+        // Update and add new records
+        queryResult.changes //
+            .where((element) => element.type != DataChangeType.removed)
+            .forEach((e) {
+          if (e.data != null) _addRecord(e.data!);
+        });
       }
+
+      data.refresh();
     }
 
     // Check if we have more data
@@ -227,7 +227,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
   /// Collection related Service call;
 
   int _addRecord(T record) {
-    var index = data.value.indexWhere((element) => element.record.id() == record.id());
+    var index = getIndex(record.id()); // data.value.indexWhere((element) => element.record.id() == record.id());
     if (index == -1) {
       data.value.insert(0, _transform(record));
       index = 0;
