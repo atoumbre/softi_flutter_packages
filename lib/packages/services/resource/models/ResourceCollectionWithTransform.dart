@@ -137,7 +137,7 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
 
     // print(data.length);
     //
-    if (_options.reactiveChanges && !_options.reactiveRecords) {
+    if (_options.reactiveChanges) {
       if (_eventCounts[pageIndex] > 1) {
         // Delete removed items
         var removedIds = queryResult.changes
@@ -154,9 +154,10 @@ class ResourceCollectionWithTransform<T extends IBaseResourceData, U extends Ext
           if (e.data != null) _addRecord(e.data!);
         });
       }
-
-      data.refresh();
     }
+
+    // Refresh data
+    data.refresh();
 
     // Check if we have more data
     hasMoreData(
