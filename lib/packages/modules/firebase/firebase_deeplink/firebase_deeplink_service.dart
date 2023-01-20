@@ -41,7 +41,7 @@ class FirebaseDynamiclinkService extends IDynamicLinkService {
 
     var _data = DynamicLinkData(
       link: data.link,
-      iosMinimumVersion: data.ios!.minimumVersion,
+      iosMinimumVersion: data.ios?.minimumVersion,
       androidMinimumVersion: data.android?.minimumVersion,
       androidClickTimestamp: data.android?.clickTimestamp,
     );
