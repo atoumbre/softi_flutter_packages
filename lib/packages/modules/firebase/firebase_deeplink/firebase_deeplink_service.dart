@@ -25,6 +25,7 @@ class FirebaseDynamiclinkService extends IDynamicLinkService {
     // using a dynamic link.
     FirebaseDynamicLinks.instance.onLink.listen(
       (PendingDynamicLinkData? dynamicLink) async {
+        print('HERE !');
         // handle link that has been retrieved
         _handleDeeplink(dynamicLink);
       },
