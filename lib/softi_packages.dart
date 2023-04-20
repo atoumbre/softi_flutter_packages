@@ -64,12 +64,12 @@ export 'package:softi_packages/packages/modules/firebase/firebase_deeplink/fireb
 export 'package:softi_packages/packages/modules/firebase/firebase_storage/firebase_storage_service.dart';
 
 ///
-export 'package:softi_packages/packages/modules/form/controllers/FormController.dart';
-export 'package:softi_packages/packages/modules/form/controllers/FormControllerMixin.dart';
-export 'package:softi_packages/packages/modules/form/controllers/ResourceFormController.dart';
-export 'package:softi_packages/packages/modules/form/helpers/binder.dart';
-export 'package:softi_packages/packages/modules/form/helpers/helpers.dart';
-export 'package:softi_packages/packages/modules/form/helpers/map_utils.dart';
+// export 'package:softi_packages/packages/modules/form/controllers/FormController.dart';
+// export 'package:softi_packages/packages/modules/form/controllers/FormControllerMixin.dart';
+// export 'package:softi_packages/packages/modules/form/controllers/ResourceFormController.dart';
+// export 'package:softi_packages/packages/modules/form/helpers/binder.dart';
+// export 'package:softi_packages/packages/modules/form/helpers/helpers.dart';
+// export 'package:softi_packages/packages/modules/form/helpers/map_utils.dart';
 
 ///
 export 'package:softi_packages/packages/services/resource/controllers/CollectionController.dart';
