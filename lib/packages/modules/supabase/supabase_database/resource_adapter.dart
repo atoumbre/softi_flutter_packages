@@ -6,6 +6,7 @@ import 'package:softi_packages/packages/modules/firebase/firebase_firestore/fire
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource.dart';
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource_adapter.dart';
 import 'package:softi_packages/packages/services/resource/models/query.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseResourceAdapter<T extends IBaseResourceData>
     extends IResourceAdapter<T> {

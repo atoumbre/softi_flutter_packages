@@ -6,8 +6,8 @@ import 'package:softi_packages/packages/services/resource/interfaces/i_resource_
 
 class SupabaseResourceBase extends IResourceBase {
   final IResource<T> Function<T extends IBaseResourceData>() _resourceResolver;
-  final _firebaseFirestore;
-
+  final FirebaseFirestore _firebaseFirestore;
+  
   SupabaseResourceBase(
     this._resourceResolver,
     this._firebaseFirestore,
