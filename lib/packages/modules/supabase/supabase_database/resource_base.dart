@@ -4,10 +4,11 @@ import 'package:softi_packages/packages/services/resource/interfaces/i_resource.
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource_adapter.dart';
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource_base.dart';
 
-class FirestoreResourceBase extends IResourceBase {
+class SupabaseResourceBase extends IResourceBase {
   final IResource<T> Function<T extends IBaseResourceData>() _resourceResolver;
-  final FirebaseFirestore _firebaseFirestore;
-  FirestoreResourceBase(
+  final _firebaseFirestore;
+
+  SupabaseResourceBase(
     this._resourceResolver,
     this._firebaseFirestore,
   );

@@ -7,29 +7,9 @@ import 'package:softi_packages/packages/services/resource/interfaces/i_resource.
 import 'package:softi_packages/packages/services/resource/interfaces/i_resource_adapter.dart';
 import 'package:softi_packages/packages/services/resource/models/query.dart';
 
-class FirestoreResourceAdapter<T extends IBaseResourceData>
+class SupabaseResourceAdapter<T extends IBaseResourceData>
     extends IResourceAdapter<T> {
-  final FirebaseFirestore _firestoreInstance;
-  FirestoreResourceAdapter(this._firestoreInstance);
-
-  CollectionReference _getRef(FirestoreResource<T> res) {
-    return _firestoreInstance.collection(res.endpoint());
-  }
-
-  // @override
-  // Future<int> count(
-  //   QueryParameters? queryParams, {
-  //   QueryPagination? pagination,
-  //   bool reactive = true,
-  // }) async {
-  //   var _query = _firestoreQueryBuilder(
-  //     _getRef(resource as FirestoreResource<T>),
-  //     params: queryParams,
-  //     pagination: pagination,
-  //   );
-  //   var result = await _query.count().get();
-  //   return result.count;
-  // }
+  final supabase = Supabase.instance.client;
 
   @override
   Stream<QueryResult<T>> find(
@@ -52,7 +32,6 @@ class FirestoreResourceAdapter<T extends IBaseResourceData>
 
         //! Filter possible here
         var data = _docs.map<T>((doc) {
-          print(i++);
           var res = fromFirestore<T>(resource as FirestoreResource<T>, doc);
           if (res == null) {
             print(res);
@@ -143,74 +122,74 @@ class FirestoreResourceAdapter<T extends IBaseResourceData>
 
   @override
   Future<void> delete(String documentId) async {
-    await _getRef(resource as FirestoreResource<T>).doc(documentId).delete();
+    await supabase.from('cities').delete().match({'id': documentId});
   }
 
   /// Internala fmethodes
-  Query _firestoreQueryBuilder(
-    CollectionReference ref, {
-    QueryParameters? params,
-    QueryPagination? pagination,
-  }) {
-    Query _query = ref;
+  // Query _firestoreQueryBuilder(
+  //   CollectionReference ref, {
+  //   QueryParameters? params,
+  //   QueryPagination? pagination,
+  // }) {
+  //   Query _query = ref;
 
-    if (params?.filterList != null) {
-      params!.filterList!.forEach((where) {
-        if (where.value != null)
-          switch (where.condition) {
-            case QueryOperator.equal:
-              _query = _query.where(where.field!, isEqualTo: where.value);
-              break;
-            case QueryOperator.notEqual:
-              _query = _query.where(where.field!, isNotEqualTo: where.value);
-              break;
-            case QueryOperator.greaterThanOrEqualTo:
-              _query = _query.where(where.field!,
-                  isGreaterThanOrEqualTo: where.value);
-              break;
-            case QueryOperator.greaterThan:
-              _query = _query.where(where.field!, isGreaterThan: where.value);
-              break;
-            case QueryOperator.lessThan:
-              _query = _query.where(where.field!, isLessThan: where.value);
-              break;
-            case QueryOperator.lessThanOrEqualTo:
-              _query =
-                  _query.where(where.field!, isLessThanOrEqualTo: where.value);
-              break;
-            case QueryOperator.isIn:
-              _query = _query.where(where.field!, whereIn: where.value);
-              break;
-            case QueryOperator.arrayContains:
-              _query = _query.where(where.field!, arrayContains: where.value);
-              break;
-            case QueryOperator.arrayContainsAny:
-              _query =
-                  _query.where(where.field!, arrayContainsAny: where.value);
-              break;
-            default:
-          }
-      });
-    }
+  //   if (params?.filterList != null) {
+  //     params!.filterList!.forEach((where) {
+  //       if (where.value != null)
+  //         switch (where.condition) {
+  //           case QueryOperator.equal:
+  //             _query = _query.where(where.field!, isEqualTo: where.value);
+  //             break;
+  //           case QueryOperator.notEqual:
+  //             _query = _query.where(where.field!, isNotEqualTo: where.value);
+  //             break;
+  //           case QueryOperator.greaterThanOrEqualTo:
+  //             _query = _query.where(where.field!,
+  //                 isGreaterThanOrEqualTo: where.value);
+  //             break;
+  //           case QueryOperator.greaterThan:
+  //             _query = _query.where(where.field!, isGreaterThan: where.value);
+  //             break;
+  //           case QueryOperator.lessThan:
+  //             _query = _query.where(where.field!, isLessThan: where.value);
+  //             break;
+  //           case QueryOperator.lessThanOrEqualTo:
+  //             _query =
+  //                 _query.where(where.field!, isLessThanOrEqualTo: where.value);
+  //             break;
+  //           case QueryOperator.isIn:
+  //             _query = _query.where(where.field!, whereIn: where.value);
+  //             break;
+  //           case QueryOperator.arrayContains:
+  //             _query = _query.where(where.field!, arrayContains: where.value);
+  //             break;
+  //           case QueryOperator.arrayContainsAny:
+  //             _query =
+  //                 _query.where(where.field!, arrayContainsAny: where.value);
+  //             break;
+  //           default:
+  //         }
+  //     });
+  //   }
 
-    // Set orderBy
-    if (params?.sortList != null) {
-      params!.sortList.forEach((orderBy) {
-        _query = _query.orderBy(orderBy.field!, descending: orderBy.desc);
-      });
-    }
+  //   // Set orderBy
+  //   if (params?.sortList != null) {
+  //     params!.sortList.forEach((orderBy) {
+  //       _query = _query.orderBy(orderBy.field!, descending: orderBy.desc);
+  //     });
+  //   }
 
-    // Get the last Document
-    if (pagination?.cursor != null) {
-      _query = _query.startAfterDocument(pagination?.cursor);
-    }
+  //   // Get the last Document
+  //   if (pagination?.cursor != null) {
+  //     _query = _query.startAfterDocument(pagination?.cursor);
+  //   }
 
-    // if (pagination?.endCursor != null) {
-    //   _query = _query.endAtDocument(pagination?.endCursor);
-    // }
+  //   // if (pagination?.endCursor != null) {
+  //   //   _query = _query.endAtDocument(pagination?.endCursor);
+  //   // }
 
-    _query = _query.limit(pagination?.limit ?? 10);
+  //   _query = _query.limit(pagination?.limit ?? 10);
 
-    return _query;
-  }
+  //   return _query;
+  // }
 }

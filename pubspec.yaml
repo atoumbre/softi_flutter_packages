@@ -28,6 +28,7 @@ dependencies:
   json_annotation: ^4.6.0
   multiple_result: ^4.0.0
   sign_in_with_apple: ^4.2.0
+  supabase_flutter: ^1.8.1
   uuid: ^3.0.7
   wechat_assets_picker: ^8.1.4
   wechat_camera_picker: ^3.6.3
