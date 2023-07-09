@@ -44,7 +44,6 @@ export 'package:softi_packages/packages/services/device/media_picker/camera_serv
 export 'package:softi_packages/packages/services/device/media_picker/interfaces/camera_service_interface.dart';
 export 'package:softi_packages/packages/services/device/media_picker/interfaces/media_picker_interface.dart';
 export 'package:softi_packages/packages/services/device/media_picker/models.dart';
-export 'package:softi_packages/packages/services/device/media_picker/wechat_media_picker_service.dart';
 
 ///
 export 'package:softi_packages/packages/modules/firebase/firebase_auth/models/settings.dart';

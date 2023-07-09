@@ -1,7 +1,9 @@
 // import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:wechat_camera_picker/wechat_camera_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
+// import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 
 enum ImageSource {
   /// Opens up the device camera, letting the user to take a new picture.

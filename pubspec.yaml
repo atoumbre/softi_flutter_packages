@@ -29,8 +29,9 @@ dependencies:
   multiple_result: ^5.0.0
   sign_in_with_apple: ^5.0.0
   uuid: ^3.0.7
-  wechat_assets_picker: ^8.1.4
-  wechat_camera_picker: ^3.6.3
+  nested:
+  # wechat_assets_picker: ^8.1.4
+  # wechat_camera_picker: ^3.6.3
 
 dev_dependencies:
   build_runner: ^2.3.2
