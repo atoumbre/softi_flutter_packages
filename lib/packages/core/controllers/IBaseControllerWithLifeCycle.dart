@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:softi_packages/packages/core/controllers/BaseController.dart';
 import 'package:softi_packages/packages/core/controllers/BaseViewController.dart';
 
-abstract class IBaseViewControllerWithLifeCycle extends IBaseViewController with WidgetsBindingObserver, LifeCycleMixin {
+abstract class IBaseViewControllerWithLifeCycle extends IBaseViewController
+    with WidgetsBindingObserver, LifeCycleMixin {
   @mustCallSuper
   @override
   void onInit() {
@@ -21,7 +22,8 @@ abstract class IBaseViewControllerWithLifeCycle extends IBaseViewController with
   }
 }
 
-abstract class IBaseControllerWithLifeCycle extends IBaseController with WidgetsBindingObserver, LifeCycleMixin {
+abstract class IBaseControllerWithLifeCycle extends IBaseController
+    with WidgetsBindingObserver, LifeCycleMixin {
   @mustCallSuper
   @override
   void onInit() {
@@ -58,6 +60,9 @@ mixin LifeCycleMixin on WidgetsBindingObserver {
         break;
       case AppLifecycleState.detached:
         onStateChange(AppLifecycleState.detached);
+        break;
+      case AppLifecycleState.hidden:
+        onStateChange(AppLifecycleState.hidden);
         break;
     }
   }

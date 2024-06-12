@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:softi_packages/packages/services/auth/models/auth_user.dart';
 
 abstract class FirebaseAuthProvider {
@@ -13,7 +14,8 @@ abstract class FirebaseAuthProvider {
     String? photoURL,
     required bool linkToUser,
   }) async {
-    final authResult = linkToUser ? await firebaseAuth.currentUser!.linkWithCredential(credential) : await firebaseAuth.signInWithCredential(credential);
+    final authResult =
+        linkToUser ? await firebaseAuth.currentUser!.linkWithCredential(credential) : await firebaseAuth.signInWithCredential(credential);
     if (linkToUser) firebaseAuth.currentUser!.reload();
     // final firebaseUser = authResult.user;
 
@@ -86,9 +88,11 @@ abstract class FirebaseAuthProvider {
       isEmailVerified: user.emailVerified,
       creationTime: user.metadata.creationTime,
       lastSignInTime: user.metadata.lastSignInTime,
-      appleUserInfo: user.providerData.firstWhere((element) => element.providerId == 'apple.com', orElse: () => UserInfo({})),
-      googleUserInfo: user.providerData.firstWhere((element) => element.providerId == 'google.com', orElse: () => UserInfo({})),
-      facebookUserInfo: user.providerData.firstWhere((element) => element.providerId == 'facebook.com', orElse: () => UserInfo({})),
+      appleUserInfo: user.providerData.firstWhereOrNull((element) => element.providerId == 'apple.com'),
+      googleUserInfo:
+          user.providerData.firstWhereOrNull((element) => element.providerId == 'google.com'), //, orElse: () => UserInfo.fromJson({})),
+      facebookUserInfo:
+          user.providerData.firstWhereOrNull((element) => element.providerId == 'facebook.com'), // orElse: () => UserInfo.fromJson({})),
       token: await user.getIdTokenResult(),
     );
 
